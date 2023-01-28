@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/error.css" />
+    <title>Something Went Wrong!</title>
+  </head>
+
+  <body>
+    <span class="head">🤨️</span>
+    <span class="oops">OOPS! SOMETHING WENT WRONG</span>
+    <% if (error) { %>
+    <i>
+      <p><%= error %></p>
+    </i>
+    <% } else { %>
+    <i>
+      <p>Sorry, the page you're looking for does not exist.</p>
+    </i>
+    <% } %>
+    <div><a href="/" class="return">Return Home</a></div>
+  </body>
+  <%- include('../footer.ejs') %>
+</html>

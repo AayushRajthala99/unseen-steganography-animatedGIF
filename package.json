@@ -1,0 +1,36 @@
+{
+  "name": "unseen-steganography-animatedgif",
+  "version": "1.0.0",
+  "description": "Unseen: Steganography on Animated GIFs",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AayushRajthala99/unseen-steganography-animatedGIFs.git"
+  },
+  "keywords": [
+    "Node.js",
+    "HTML/CSS",
+    "Python",
+    "Steganography",
+    "GIF"
+  ],
+  "author": "Aayush Rajthala, Elzina Dhimal, Monika Chapagain",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.1",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.18.1",
+    "express-session": "^1.17.2",
+    "winston": "^3.3.4",
+    "winston-daily-rotate-file": "^4.7.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.5.0",
+    "nodemon": "^2.0.20"
+  }
+}
