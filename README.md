@@ -1,2 +1,1 @@
-# unseen-steganography-animatedGIFs
-Unseen: Steganography on Animated GIFs
+# Unseen: Steganography on Animated GIFs
