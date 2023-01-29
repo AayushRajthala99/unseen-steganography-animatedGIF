@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/error.css" />
     <title>Something Went Wrong!</title>
   </head>
-
+  <%- include('./header.ejs') %>
   <body>
     <span class="head">🤨️</span>
     <span class="oops">OOPS! SOMETHING WENT WRONG</span>
@@ -23,5 +23,5 @@
     <% } %>
     <div><a href="/" class="return">Return Home</a></div>
   </body>
-  <%- include('../footer.ejs') %>
+  <%- include('./footer.ejs') %>
 </html>
