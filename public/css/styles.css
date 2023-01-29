@@ -146,13 +146,13 @@ textarea {
 
 input:hover,
 textarea:hover {
-  border: 2px solid #ed7002;
+  border: 1px solid #ed7002;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  border: 2px solid #ed7002;
+  border: 1px solid #ed7002;
 }
 
 .submit-button {
@@ -182,18 +182,16 @@ textarea:focus {
 }
 
 .form-error {
+  cursor: pointer;
+  width: fit-content;
   color: #d01e29;
   font-size: 14px;
+  margin-top: 5px;
 }
 
 .logo img {
   height: 35px;
   margin-left: 15px;
-}
-
-.radio-selection {
-  display: flex;
-  justify-content: space-evenly;
 }
 
 .radio-value {
@@ -216,12 +214,14 @@ textarea:focus {
 }
 
 .radio-value label {
-  width: 60px;
+  width: 80px;
+  margin: 0 10px;
   display: inline-block;
   background-color: #ced4da;
   padding: 4px 4px;
   cursor: pointer;
   font-size: 14px;
+  border-radius: 3px;
 }
 
 .radio-value input[type="radio"]:checked + label {
