@@ -123,7 +123,7 @@ function applicationFormValidation(applicationForm) {
   }
 
   //Validation Success Message Handlers...
-  function setSuccessFor(id) {
+  function setSuccessFor(input) {
     const errordiv = applicationForm.querySelector("#" + input.id + "Error");
     errordiv.innerText = "";
   }
