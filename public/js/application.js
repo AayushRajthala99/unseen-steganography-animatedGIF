@@ -7,8 +7,10 @@ let inputLength = {
 
 document.addEventListener("click", (event) => {
   let targetId = event.target.id;
+
   if (
-    (event.target.matches("input") || event.target.matches("textarea")) &&
+    event.target.matches("input") ||
+    event.target.matches("textarea") ||
     targetId.includes("Error")
   ) {
     let selectionId;
