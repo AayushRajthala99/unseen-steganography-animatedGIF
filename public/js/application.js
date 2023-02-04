@@ -5,6 +5,22 @@ let inputLength = {
   max: 60,
 };
 
+const isGif = (file) => {
+  const reader = new FileReader();
+  reader.readAsArrayBuffer(file);
+  reader.onloadend = () => {
+    const buf = new Uint8Array(reader.result);
+    const hex = Array.from(buf.slice(0, 3), (b) =>
+      b.toString(16).padStart(2, "0")
+    ).join("");
+    if (hex === "474946") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+};
+
 document.addEventListener("click", (event) => {
   let targetId = event.target.id;
 
@@ -75,9 +91,12 @@ function applicationFormValidation(applicationForm) {
   if (fileLengthValue == 0) {
     fileErrorFlag = true;
     setErrorFor(file, "* File Required!");
-  } else if (!fileType.includes("image")) {
+  } else if (!fileType.includes("gif")) {
     fileErrorFlag = true;
     setErrorFor(file, "* Invalid File Type!");
+  } else if (!isGif(file.files[0])) {
+    fileErrorFlag = true;
+    setErrorFor(file, "* Corrupt GIF File!");
   } else {
     fileErrorFlag = false;
     setSuccessFor(file);

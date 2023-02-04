@@ -19,6 +19,33 @@
   src: url(../fonts/Poppins-SemiBold.ttf);
 }
 
+@media only screen and (max-width: 1050px) {
+  .footer-title {
+    display: none;
+  }
+  .header-title {
+    display: none;
+  }
+  header {
+    justify-content: center;
+  }
+}
+
+@media only screen and (min-width: 1050px) {
+  header {
+    justify-content: space-between;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .footer-title {
+    display: block;
+  }
+  .footer-info {
+    display: none;
+  }
+}
+
 /* Global */
 * {
   margin: 0;
@@ -72,7 +99,6 @@ header {
   position: absolute;
   top: 0;
   display: flex;
-  justify-content: space-between;
   background-color: #171717;
   color: #c4c4c4;
   width: 100%;
@@ -241,7 +267,7 @@ textarea:focus {
   justify-content: space-between;
   height: 75vh;
   width: 40%;
-  min-width: 400px;
+  min-width: 500px;
   border: 0px;
   border-radius: 10px;
   background-color: #2a2a2a;
