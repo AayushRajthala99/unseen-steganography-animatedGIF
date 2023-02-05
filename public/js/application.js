@@ -132,28 +132,6 @@ function applicationFormValidation(applicationForm) {
     setSuccessFor(key);
   }
 
-  //Validation Error Message Handlers...
-  function setErrorFor(input, message) {
-    const errordiv = applicationForm.querySelector("#" + input.id + "Error");
-    errordiv.innerText = message;
-  }
-
-  function setErrorForID(id, message) {
-    const errordiv = applicationForm.querySelector("#" + id);
-    errordiv.innerText = message;
-  }
-
-  //Validation Success Message Handlers...
-  function setSuccessFor(input) {
-    const errordiv = applicationForm.querySelector("#" + input.id + "Error");
-    errordiv.innerText = "";
-  }
-
-  function setSuccessForID(id) {
-    const errordiv = applicationForm.querySelector("#" + id);
-    errordiv.innerText = "";
-  }
-
   function valueLength(value) {
     return value.toString().length;
   }
@@ -168,4 +146,26 @@ function applicationFormValidation(applicationForm) {
   } else {
     return false;
   }
+}
+
+//Validation Error Message Handlers...
+function setErrorFor(input, message) {
+  const errordiv = document.querySelector("#" + input.id + "Error");
+  errordiv.innerText = message;
+}
+
+function setErrorForID(id, message) {
+  const errordiv = document.querySelector("#" + id);
+  errordiv.innerText = message;
+}
+
+//Validation Success Message Handlers...
+function setSuccessFor(input) {
+  const errordiv = document.querySelector("#" + input.id + "Error");
+  errordiv.innerText = "";
+}
+
+function setSuccessForID(id) {
+  const errordiv = document.querySelector("#" + id);
+  errordiv.innerText = "";
 }
