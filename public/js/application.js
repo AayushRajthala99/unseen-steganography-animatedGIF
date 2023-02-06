@@ -5,7 +5,11 @@ let inputLength = {
   max: 60,
 };
 
-const isGif = (file) => {
+let fileErrorFlag = false;
+const gifFile = document.querySelector("#gifFile");
+
+gifFile.addEventListener("change", function () {
+  const file = this.files[0];
   const reader = new FileReader();
   reader.readAsArrayBuffer(file);
   reader.onloadend = () => {
@@ -13,13 +17,26 @@ const isGif = (file) => {
     const hex = Array.from(buf.slice(0, 3), (b) =>
       b.toString(16).padStart(2, "0")
     ).join("");
+
     if (hex === "474946") {
-      return true;
+      fileErrorFlag = false;
+      setSuccessFor(gifFile);
     } else {
-      return false;
+      fileErrorFlag = true;
+      setErrorFor(gifFile, "* Corrupt GIF File!");
+    }
+
+    let fileType;
+    let fileLengthValue = gifFile.files.length;
+    if (fileLengthValue > 0) {
+      fileType = gifFile.files[0].type;
+      if (!fileType.includes("gif")) {
+        fileErrorFlag = true;
+        setErrorFor(gifFile, "* Invalid File Type!");
+      }
     }
   };
-};
+});
 
 document.addEventListener("click", (event) => {
   let targetId = event.target.id;
@@ -66,22 +83,17 @@ document.addEventListener("click", (event) => {
   }
 });
 
-function applicationFormValidation(applicationForm) {
-  let fileErrorFlag, operationErrorFlag, secretMessageErrorFlag, keyErrorFlag;
+function applicationFormValidation() {
+  let { operationErrorFlag, secretMessageErrorFlag, keyErrorFlag } = false;
 
   //Form Value Acquisition...
-  let file = applicationForm.querySelector("#gifFile");
-  let operationValues = document.getElementsByName("operation");
-  let secretMessage = applicationForm.querySelector("#secretmessage");
-  let key = applicationForm.querySelector("#key");
-  let fileType;
+  const operationValues = document.getElementsByName("operation");
+  const secretMessage = document.querySelector("#secretmessage");
+  const key = document.querySelector("#key");
 
-  let fileLengthValue = file.files.length;
-  if (fileLengthValue > 0) {
-    fileType = file.files[0].type;
-  }
-  let secretMessageValue = secretMessage.value.trim();
   let keyValue = key.value.trim();
+  let fileLengthValue = gifFile.files.length;
+  let secretMessageValue = secretMessage.value.trim();
 
   /*.................................... 
             Validation Operations 
@@ -90,16 +102,7 @@ function applicationFormValidation(applicationForm) {
   //Validation for File...
   if (fileLengthValue == 0) {
     fileErrorFlag = true;
-    setErrorFor(file, "* File Required!");
-  } else if (!fileType.includes("gif")) {
-    fileErrorFlag = true;
-    setErrorFor(file, "* Invalid File Type!");
-  } else if (!isGif(file.files[0])) {
-    fileErrorFlag = true;
-    setErrorFor(file, "* Corrupt GIF File!");
-  } else {
-    fileErrorFlag = false;
-    setSuccessFor(file);
+    setErrorFor(gifFile, "* File Required!");
   }
 
   //Validation for Operation...
