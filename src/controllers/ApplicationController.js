@@ -23,12 +23,13 @@ async function process(req, res) {
       operationName: null,
       gifFile: gifFile,
       key: key,
-      secretmessage: secretmessage,
+      secretmessage: null,
     };
 
     // Encode Operation Handler...
     if (operation == "0") {
       requestObject.operationName = "Encode";
+      requestObject.secretmessage = secretmessage;
       let encodeResult = await encode(requestObject);
       if (encodeResult.status) {
         res.redirect("/");
@@ -42,12 +43,12 @@ async function process(req, res) {
     // Decode Operation Handler...
     if (operation == "1") {
       requestObject.operation = "Decode";
-      let decodeResult = await decode(req, res, requestObject);
+      let decodeResult = await decode(requestObject);
       if (decodeResult.status) {
         res.redirect("/");
       } else {
         throw {
-          message: "ERROR PERFORMING ENCODE OPERATION",
+          message: "ERROR PERFORMING DECODE OPERATION",
         };
       }
     }
@@ -62,7 +63,7 @@ async function process(req, res) {
 async function encode(objectData) {
   try {
     console.log(objectData);
-    return { status: true };
+    return { status: true, result: objectData };
   } catch (error) {
     logger.error(`ENCODE OPERATION ERROR: ${error}`);
     return { status: false };
@@ -72,7 +73,7 @@ async function encode(objectData) {
 async function decode(objectData) {
   try {
     console.log(objectData);
-    return { status: true };
+    return { status: true, result: objectData };
   } catch (error) {
     logger.error(`DECODE OPERATION ERROR: ${error}`);
     return { status: false };

@@ -40,6 +40,7 @@ gifFile.addEventListener("change", function () {
 
 document.addEventListener("click", (event) => {
   let targetId = event.target.id;
+  console.log(targetId);
   if (
     event.target.matches("input") ||
     event.target.matches("textarea") ||
@@ -50,7 +51,9 @@ document.addEventListener("click", (event) => {
         targetId.includes("encode") ||
         targetId.includes("decode") ||
         targetId.includes("labelForEncode") ||
-        targetId.includes("labelForDecode")
+        targetId.includes("labelForDecode") ||
+        targetId.includes("gifFile") ||
+        targetId.includes("gifFileError")
       )
     ) {
       let selectionId;
@@ -68,10 +71,22 @@ document.addEventListener("click", (event) => {
     const errordiv = document.querySelector("#operationError");
     errordiv.innerText = "";
     const secretInput = document.querySelector("#secretMessageField");
-    secretInput.style.display = "block";
+    const childElements = secretInput.querySelectorAll("*");
+    for (let i = 0; i < childElements.length; i++) {
+      if (childElements[i].hasAttribute("disabled")) {
+        childElements[i].removeAttribute("disabled");
+      }
+      if (childElements[i].hasAttribute("readonly")) {
+        childElements[i].removeAttribute("readonly");
+      }
+    }
     if (secretInput.hasAttribute("disabled")) {
       secretInput.removeAttribute("disabled");
     }
+    if (secretInput.hasAttribute("readonly")) {
+      secretInput.removeAttribute("readonly");
+    }
+    secretInput.style.display = "block";
   }
 
   if (targetId.includes("labelForDecode" || "decode")) {
@@ -79,7 +94,13 @@ document.addEventListener("click", (event) => {
     errordiv.innerText = "";
     const secretInput = document.querySelector("#secretMessageField");
     secretInput.style.display = "none";
+    const childElements = secretInput.querySelectorAll("*");
+    for (let i = 0; i < childElements.length; i++) {
+      childElements[i].setAttribute("disabled", "");
+      childElements[i].setAttribute("readonly", "");
+    }
     secretInput.setAttribute("disabled", "");
+    secretInput.setAttribute("readonly", "");
   }
 
   if (event.target.className == "submit-button") {
@@ -130,7 +151,7 @@ function applicationFormValidation() {
   }
 
   //Validation for Secret Message...
-  if (secretMessageValue === "") {
+  if (operationValues[0].checked && secretMessageValue === "") {
     secretMessageErrorFlag = true;
     setErrorFor(secretMessage, "* Secret Message Required!");
   } else {
