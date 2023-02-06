@@ -40,20 +40,28 @@ gifFile.addEventListener("change", function () {
 
 document.addEventListener("click", (event) => {
   let targetId = event.target.id;
-
   if (
     event.target.matches("input") ||
     event.target.matches("textarea") ||
     targetId.includes("Error")
   ) {
-    let selectionId;
-    if (targetId.includes("Error")) {
-      selectionId = "#" + event.target.id;
-    } else {
-      selectionId = "#" + event.target.id + "Error";
+    if (
+      !(
+        targetId.includes("encode") ||
+        targetId.includes("decode") ||
+        targetId.includes("labelForEncode") ||
+        targetId.includes("labelForDecode")
+      )
+    ) {
+      let selectionId;
+      if (targetId.includes("Error")) {
+        selectionId = "#" + event.target.id;
+      } else {
+        selectionId = "#" + event.target.id + "Error";
+      }
+      const errordiv = document.querySelector(selectionId);
+      errordiv.innerText = "";
     }
-    const errordiv = document.querySelector(selectionId);
-    errordiv.innerText = "";
   }
 
   if (targetId.includes("labelForEncode" || "encode")) {
@@ -61,6 +69,9 @@ document.addEventListener("click", (event) => {
     errordiv.innerText = "";
     const secretInput = document.querySelector("#secretMessageField");
     secretInput.style.display = "block";
+    if (secretInput.hasAttribute("disabled")) {
+      secretInput.removeAttribute("disabled");
+    }
   }
 
   if (targetId.includes("labelForDecode" || "decode")) {
@@ -68,6 +79,7 @@ document.addEventListener("click", (event) => {
     errordiv.innerText = "";
     const secretInput = document.querySelector("#secretMessageField");
     secretInput.style.display = "none";
+    secretInput.setAttribute("disabled", "");
   }
 
   if (event.target.className == "submit-button") {
