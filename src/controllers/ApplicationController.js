@@ -14,37 +14,68 @@ async function index(req, res) {
   }
 }
 
-function process(req, res) {
+async function process(req, res) {
   try {
-    res.render("application/index");
-    // Encode & Decode Operation Handlers...
+    const { operation, gifFile, key, secretmessage } = req.body;
+
+    // Object Initialization for Encode & Decode Operation...
+    let requestObject = {
+      operationName: null,
+      gifFile: gifFile,
+      key: key,
+      secretmessage: secretmessage,
+    };
+
+    // Encode Operation Handler...
+    if (operation == "0") {
+      requestObject.operationName = "Encode";
+      let encodeResult = await encode(requestObject);
+      if (encodeResult.status) {
+        res.redirect("/");
+      } else {
+        throw {
+          error: "ERROR PERFORMING ENCODE OPERATION",
+        };
+      }
+    }
+
+    // Decode Operation Handler...
+    if (operation == "1") {
+      requestObject.operation = "Decode";
+      let decodeResult = await decode(req, res, requestObject);
+      if (decodeResult.status) {
+        res.redirect("/");
+      } else {
+        throw {
+          message: "ERROR PERFORMING ENCODE OPERATION",
+        };
+      }
+    }
   } catch (error) {
-    logger.error(`START PROCESS ERROR: ${error}`);
+    logger.error(`START PROCESS ERROR: ${error.message}`);
     res.render("error", {
-      error: "ERROR PROCESSING INPUT DATA",
+      error: error.message,
     });
   }
 }
 
-function encode(req, res) {
+async function encode(objectData) {
   try {
-    return;
+    console.log(objectData);
+    return { status: true };
   } catch (error) {
     logger.error(`ENCODE OPERATION ERROR: ${error}`);
-    res.render("error", {
-      error: "ERROR PERFORMING ENCODE OPERATION",
-    });
+    return { status: false };
   }
 }
 
-async function decode(req, res) {
+async function decode(objectData) {
   try {
-    return;
+    console.log(objectData);
+    return { status: true };
   } catch (error) {
     logger.error(`DECODE OPERATION ERROR: ${error}`);
-    res.render("error", {
-      error: "ERROR PERFORMING DECODE OPERATION",
-    });
+    return { status: false };
   }
 }
 
