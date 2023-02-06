@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { logger } = require("../utils/logger");
-const { encryptMessage, decryptMessage } = require("../utils/utils");
+const { hashedKey, encryptMessage, decryptMessage } = require("../utils/utils");
 
 async function index(req, res) {
   try {
@@ -22,57 +22,70 @@ async function process(req, res) {
     let requestObject = {
       operationName: null,
       gifFile: gifFile,
-      key: key,
+      key: hashedKey(key),
       secretmessage: null,
     };
 
     // Encode Operation Handler...
     if (operation == "0") {
-      requestObject.operationName = "Encode";
+      requestObject.operationName = "ENCODE";
       requestObject.secretmessage = secretmessage;
       let encodeResult = await encode(requestObject);
       if (encodeResult.status) {
+        console.log("ENCODE RESULT===", encodeResult.result);
         res.redirect("/");
       } else {
         throw {
-          error: "ERROR PERFORMING ENCODE OPERATION",
+          message: "ERROR PERFORMING ENCODE OPERATION",
         };
       }
     }
 
     // Decode Operation Handler...
     if (operation == "1") {
-      requestObject.operation = "Decode";
+      requestObject.operation = "DECODE";
       let decodeResult = await decode(requestObject);
       if (decodeResult.status) {
+        console.log("DECODE RESULT===", decodeResult.result);
         res.redirect("/");
       } else {
         throw {
-          message: "ERROR PERFORMING DECODE OPERATION",
+          error: "ERROR PERFORMING DECODE OPERATION",
         };
       }
     }
   } catch (error) {
-    logger.error(`START PROCESS ERROR: ${error.message}`);
+    logger.error(`START PROCESS ERROR: ${error.error}`);
     res.render("error", {
-      error: error.message,
+      error: error.error,
     });
   }
 }
 
 async function encode(objectData) {
   try {
-    console.log(objectData);
-    return { status: true, result: objectData };
+    operationResult = encryptMessage(objectData.secretmessage, objectData.key);
+    if (operationResult.status) {
+      objectData.secretmessage = operationResult.message;
+      console.log("ENCODE OBJECT DATA===", objectData);
+      //Encode Operation Here...
+
+      // Return Values...
+      return { status: true, result: objectData };
+    }
   } catch (error) {
-    logger.error(`ENCODE OPERATION ERROR: ${error}`);
+    logger.error(`ENCODE OPERATION ERROR: ${error.error}`);
     return { status: false };
   }
 }
 
 async function decode(objectData) {
   try {
-    console.log(objectData);
+    console.log("DECODE OBJECT DATA===", objectData);
+
+    //Decode Operation Here...
+
+    // Return Values...
     return { status: true, result: objectData };
   } catch (error) {
     logger.error(`DECODE OPERATION ERROR: ${error}`);

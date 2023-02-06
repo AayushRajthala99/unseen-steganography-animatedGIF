@@ -40,7 +40,6 @@ gifFile.addEventListener("change", function () {
 
 document.addEventListener("click", (event) => {
   let targetId = event.target.id;
-  console.log(targetId);
   if (
     event.target.matches("input") ||
     event.target.matches("textarea") ||
