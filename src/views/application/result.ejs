@@ -12,9 +12,12 @@
 
   <body oncontextmenu="return false">
     <div class="output-wrapper">
+      <% if (result.operationName == "ENCODE"){ %>
       <fieldset class="gif-container">
         <legend class="form-info">OUTPUT</legend>
+        <div class="gif-result"></div>
       </fieldset>
+      <% } %>
       <fieldset class="result-container input-headers">
         <legend class="form-info">Results</legend>
         <div>
@@ -26,23 +29,13 @@
         <div>
           <fieldset class="output-field">
             <legend>Secret Key</legend>
-            <div class="output-value">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet
-              aperiam quod nam facilis cumque molestias sunt. Omnis neque
-              aliquam mollitia! Temporibus ipsa obcaecati modi inventore sit
-              amet dolor exercitationem autem.
-            </div>
+            <div class="output-value"><%= result.key %></div>
           </fieldset>
         </div>
         <div>
           <fieldset class="output-field">
             <legend>Secret Message</legend>
-            <div class="output-value">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
-              laudantium sunt similique sit quas, in labore cupiditate, ex
-              doloremque error voluptas, et fugit eaque minus autem eius.
-              Beatae, facilis unde.
-            </div>
+            <div class="output-value"><%= result.secretmessage %></div>
           </fieldset>
         </div>
       </fieldset>

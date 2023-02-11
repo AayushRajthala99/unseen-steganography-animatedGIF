@@ -32,8 +32,9 @@ async function process(req, res) {
       requestObject.secretmessage = secretmessage;
       let encodeResult = await encode(requestObject);
       if (encodeResult.status) {
-        console.log("ENCODE RESULT===", encodeResult.result);
-        res.redirect("/");
+        let result = encodeResult.result;
+        console.log("ENCODE RESULT===", result);
+        res.render("application/result", { result: result });
       } else {
         throw {
           message: "ERROR PERFORMING ENCODE OPERATION",
@@ -47,7 +48,7 @@ async function process(req, res) {
       let decodeResult = await decode(requestObject);
       if (decodeResult.status) {
         console.log("DECODE RESULT===", decodeResult.result);
-        res.redirect("/");
+        res.render("application/result", { result: result });
       } else {
         throw {
           error: "ERROR PERFORMING DECODE OPERATION",

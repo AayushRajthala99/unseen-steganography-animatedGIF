@@ -26,7 +26,7 @@
 }
 
 .result-container {
-  width: 30%;
+  max-width: 500px;
   min-width: 450px;
   padding: 0 15px;
   height: 450px;
@@ -42,14 +42,14 @@
 }
 
 .output-field {
-  width: inherit;
+  width: 100%;
   max-height: 130px;
   padding: revert;
 }
 
 .output-value {
-  width: 100%;
-  min-width: 375px;
+  min-width: 430px;
+  max-width: 430px;
   height: fit-content;
   max-height: 60px;
   text-align: justify;
