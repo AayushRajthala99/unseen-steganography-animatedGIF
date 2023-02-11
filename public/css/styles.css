@@ -291,6 +291,10 @@ textarea:focus {
   font-size: 1.5rem;
 }
 
+.input-headers {
+  font-size: 1.1rem;
+}
+
 .input-field {
   height: 110px;
   padding: 10px;

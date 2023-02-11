@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/result.css" />
+    <title>Unseen: Steganography On Animated GIFs</title>
+  </head>
+  <%- include('../header.ejs') %>
+
+  <body oncontextmenu="return false">
+    <div class="output-wrapper">
+      <fieldset class="gif-container">
+        <legend class="form-info">OUTPUT</legend>
+      </fieldset>
+      <fieldset class="result-container input-headers">
+        <legend class="form-info">Results</legend>
+        <div>
+          <fieldset class="output-field">
+            <legend>Operation</legend>
+            <div class="operation-value">ENCODE</div>
+          </fieldset>
+        </div>
+        <div>
+          <fieldset class="output-field">
+            <legend>Secret Key</legend>
+            <div class="output-value">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet
+              aperiam quod nam facilis cumque molestias sunt. Omnis neque
+              aliquam mollitia! Temporibus ipsa obcaecati modi inventore sit
+              amet dolor exercitationem autem.
+            </div>
+          </fieldset>
+        </div>
+        <div>
+          <fieldset class="output-field">
+            <legend>Secret Message</legend>
+            <div class="output-value">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet
+              laudantium sunt similique sit quas, in labore cupiditate, ex
+              doloremque error voluptas, et fugit eaque minus autem eius.
+              Beatae, facilis unde.
+            </div>
+          </fieldset>
+        </div>
+      </fieldset>
+    </div>
+    <div><a href="/" class="return">HOME</a></div>
+  </body>
+  <%- include('../footer.ejs') %>
+</html>
