@@ -23,15 +23,26 @@
         <div>
           <fieldset class="output-field">
             <legend>Operation</legend>
-            <div class="operation-value">ENCODE</div>
+            <% if (result.operationName){ %>
+            <div class="operation-value"><%= result.operationName %></div>
+            <% } %>
           </fieldset>
         </div>
+
+        <div>
+          <fieldset class="output-field">
+            <legend>File Information</legend>
+            <div class="operation-value">" <%= result.gifFile %> "</div>
+          </fieldset>
+        </div>
+
         <div>
           <fieldset class="output-field">
             <legend>Secret Key</legend>
             <div class="output-value"><%= result.key %></div>
           </fieldset>
         </div>
+
         <div>
           <fieldset class="output-field">
             <legend>Secret Message</legend>

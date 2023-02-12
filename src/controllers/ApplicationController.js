@@ -30,7 +30,8 @@ async function process(req, res) {
     if (operation == "0") {
       requestObject.operationName = "ENCODE";
       requestObject.secretmessage = secretmessage;
-      let encodeResult = await encode(requestObject);
+
+      let encodeResult = await encode(reqValue, requestObject);
       if (encodeResult.status) {
         let result = encodeResult.result;
         console.log("ENCODE RESULT===", result);
@@ -44,14 +45,15 @@ async function process(req, res) {
 
     // Decode Operation Handler...
     if (operation == "1") {
-      requestObject.operation = "DECODE";
+      requestObject.operationName = "DECODE";
       let decodeResult = await decode(requestObject);
       if (decodeResult.status) {
-        console.log("DECODE RESULT===", decodeResult.result);
+        result = decodeResult.result;
+        console.log("DECODE RESULT===", result);
         res.render("application/result", { result: result });
       } else {
         throw {
-          error: "ERROR PERFORMING DECODE OPERATION",
+          message: "ERROR PERFORMING DECODE OPERATION",
         };
       }
     }
@@ -65,10 +67,14 @@ async function process(req, res) {
 
 async function encode(objectData) {
   try {
-    operationResult = encryptMessage(objectData.secretmessage, objectData.key);
+    let operationResult = encryptMessage(
+      objectData.secretmessage,
+      objectData.key
+    );
+
     if (operationResult.status) {
       objectData.secretmessage = operationResult.message;
-      console.log("ENCODE OBJECT DATA===", objectData);
+      // console.log("ENCODE OBJECT DATA===", objectData);
       //Encode Operation Here...
 
       // Return Values...
@@ -84,10 +90,23 @@ async function decode(objectData) {
   try {
     console.log("DECODE OBJECT DATA===", objectData);
 
-    //Decode Operation Here...
+    // Test Secret Message for Now, Use 123123 as the key...
+    objectData.secretmessage =
+      "fce603bf054edbc649dd1284e7578232:c445c21905089900ff74c59a6e8470f5";
 
-    // Return Values...
-    return { status: true, result: objectData };
+    let operationResult = decryptMessage(
+      objectData.secretmessage,
+      objectData.key
+    );
+
+    if (operationResult.status) {
+      objectData.secretmessage = operationResult.message;
+      // console.log("DECODE OBJECT DATA===", objectData);
+      //Decode Operation Here...
+
+      // Return Values...
+      return { status: true, result: objectData };
+    }
   } catch (error) {
     logger.error(`DECODE OPERATION ERROR: ${error}`);
     return { status: false };
