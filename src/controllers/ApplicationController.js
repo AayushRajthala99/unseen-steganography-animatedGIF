@@ -31,7 +31,7 @@ async function process(req, res) {
       requestObject.operationName = "ENCODE";
       requestObject.secretmessage = secretmessage;
 
-      let encodeResult = await encode(reqValue, requestObject);
+      let encodeResult = await encode(requestObject);
       if (encodeResult.status) {
         let result = encodeResult.result;
         console.log("ENCODE RESULT===", result);
