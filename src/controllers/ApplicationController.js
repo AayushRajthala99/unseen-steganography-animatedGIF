@@ -1,7 +1,40 @@
 const fs = require("fs");
 const path = require("path");
+const { spawn } = require("child_process");
 const { logger } = require("../utils/logger");
 const { hashedKey, encryptMessage, decryptMessage } = require("../utils/utils");
+const { type } = require("os");
+
+// Python Script Paths...
+let encodeScriptPath = path.resolve("./src/scripts/encode.py");
+let decodeScriptPath = path.resolve("./src/scripts/decode.py");
+
+async function runPythonScript(script, filename, key, secretMessage) {
+  return new Promise((resolve, reject) => {
+    const pythonProcess = spawn("python", [
+      script,
+      filename,
+      key,
+      secretMessage,
+    ]);
+
+    pythonProcess.stdout.on("data", (data) => {
+      console.log(`Python script output: ${data}`);
+    });
+
+    pythonProcess.stderr.on("data", (data) => {
+      console.error(`Python script error: ${data}`);
+    });
+
+    pythonProcess.on("close", (code) => {
+      if (code == 0) {
+        resolve({ code: 0 });
+      } else {
+        reject({ error: code });
+      }
+    });
+  });
+}
 
 async function index(req, res) {
   try {
@@ -58,9 +91,9 @@ async function process(req, res) {
       }
     }
   } catch (error) {
-    logger.error(`START PROCESS ERROR: ${error.error}`);
+    logger.error(`START PROCESS ERROR: ${error.message}`);
     res.render("error", {
-      error: error.error,
+      error: error.message,
     });
   }
 }
@@ -75,13 +108,38 @@ async function encode(objectData) {
     if (operationResult.status) {
       objectData.secretmessage = operationResult.message;
       // console.log("ENCODE OBJECT DATA===", objectData);
-      //Encode Operation Here...
 
-      // Return Values...
-      return { status: true, result: objectData };
+      //Encode Operation Here...
+      encodeArguments = [
+        `${encodeScriptPath}`,
+        `${objectData.gifFile}`,
+        `${objectData.key}`,
+        `${objectData.secretmessage}`,
+      ];
+
+      let message;
+
+      await runPythonScript(
+        encodeArguments[0],
+        encodeArguments[1],
+        encodeArguments[2],
+        encodeArguments[3]
+      )
+        .then((result) => {
+          message = result.code;
+        })
+        .catch((error) => {
+          message = error.error;
+        });
+      console.log(message, typeof message);
+      if (message == 0) {
+        return { status: true, result: objectData };
+      } else {
+        throw { message: message };
+      }
     }
   } catch (error) {
-    logger.error(`ENCODE OPERATION ERROR: ${error.error}`);
+    logger.error(`ENCODE OPERATION ERROR: ${error.message}`);
     return { status: false };
   }
 }
