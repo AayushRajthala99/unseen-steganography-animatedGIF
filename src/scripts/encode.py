@@ -5,6 +5,7 @@ from PIL import Image, ImageOps
 # Getting Python Argument Values...
 filename = str(sys.argv[1])
 key = str(sys.argv[2])
+
 # Appending '#' as Terminating Character of Secret Message...
 secretMessage = f"{str(sys.argv[3])}#"
 
@@ -40,7 +41,7 @@ if (os.path.exists(filePath)):
 
             totalFrames = num_frames * len(frames[0])
             totalBitsCount = len(secretMessage) * 8
-            print(totalFrames)
+            print("\nTotal GIF Frames == ", totalFrames)
 
             # keyValue to specify pixel gaps to hide secret bits...
             keyValue = int(key, 16) % 256
@@ -49,6 +50,7 @@ if (os.path.exists(filePath)):
             hex = secretMessage
             binaryString = ''
 
+            print("\n---HEX TO BINARY CONVERSION RESULTS---")
             for i in range(len(hex)):
                 char = ord(hex[i])
                 binary = bin(char)[2:]
@@ -58,7 +60,7 @@ if (os.path.exists(filePath)):
                 if (hex[i] == '#'):
                     break
 
-            print("SECRET MESSAGE (HEX) == ", hex)
+            print("\nSECRET MESSAGE (HEX) == ", hex)
             print("SECRET MESSAGE (BIN) == ", binaryString)
             print("Theoretical Binary Bits Length == ", len(hex*8))
             print("Calculated Binary Bits Length == ", len(binaryString))

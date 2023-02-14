@@ -81,7 +81,7 @@ async function process(req, res) {
       let decodeResult = await decode(requestObject);
       if (decodeResult.status) {
         result = decodeResult.result;
-        console.log("DECODE RESULT===", result);
+        console.log("\nDECODE RESULT===", result);
         res.render("application/result", { result: result });
       } else {
         throw {
@@ -106,7 +106,6 @@ async function encode(objectData) {
 
     if (operationResult.status) {
       objectData.secretmessage = operationResult.message;
-      // console.log("ENCODE OBJECT DATA===", objectData);
 
       //Encode Operation Here...
       encodeArguments = [
@@ -130,7 +129,7 @@ async function encode(objectData) {
         .catch((error) => {
           message = error.error;
         });
-      console.log(message, typeof message);
+
       if (message == 0) {
         return { status: true, result: objectData };
       } else {
