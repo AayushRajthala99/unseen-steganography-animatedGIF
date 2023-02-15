@@ -149,6 +149,7 @@ async function decode(objectData) {
     // Test Secret Message for Now, Use 123123 as the key...
     objectData.secretmessage =
       "fce603bf054edbc649dd1284e7578232:c445c21905089900ff74c59a6e8470f5";
+    objectData.key = "123123";
 
     let operationResult = decryptMessage(
       objectData.secretmessage,
