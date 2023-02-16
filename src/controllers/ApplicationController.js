@@ -59,35 +59,39 @@ async function process(req, res) {
     };
 
     // Encode Operation Handler...
-    if (operation == "0") {
-      requestObject.operationName = "ENCODE";
-      requestObject.secretmessage = secretmessage;
+    try {
+      if (operation == "0") {
+        requestObject.operationName = "ENCODE";
+        requestObject.secretmessage = secretmessage;
 
-      let encodeResult = await encode(requestObject);
-      if (encodeResult.status) {
-        let result = encodeResult.result;
-        console.log("ENCODE RESULT===", result);
-        res.render("application/result", { result: result });
-      } else {
-        throw {
-          message: "ERROR PERFORMING ENCODE OPERATION",
-        };
+        let encodeResult = await encode(requestObject);
+        if (encodeResult.status) {
+          let result = encodeResult.result;
+          console.log("ENCODE RESULT===", result);
+          res.render("application/result", { result: result });
+        } else {
+          throw "";
+        }
       }
+    } catch (error) {
+      throw { message: "ERROR PERFORMING ENCODE OPERATION" };
     }
 
     // Decode Operation Handler...
-    if (operation == "1") {
-      requestObject.operationName = "DECODE";
-      let decodeResult = await decode(requestObject);
-      if (decodeResult.status) {
-        result = decodeResult.result;
-        console.log("\nDECODE RESULT===", result);
-        res.render("application/result", { result: result });
-      } else {
-        throw {
-          message: "ERROR PERFORMING DECODE OPERATION",
-        };
+    try {
+      if (operation == "1") {
+        requestObject.operationName = "DECODE";
+        let decodeResult = await decode(requestObject);
+        if (decodeResult.status) {
+          result = decodeResult.result;
+          console.log("\nDECODE RESULT===", result);
+          res.render("application/result", { result: result });
+        } else {
+          throw "";
+        }
       }
+    } catch (error) {
+      throw { message: "ERROR PERFORMING DECODE OPERATION" };
     }
   } catch (error) {
     logger.error(`START PROCESS ERROR: ${error.message}`);
@@ -145,12 +149,11 @@ async function encode(objectData) {
 async function decode(objectData) {
   try {
     console.log("DECODE OBJECT DATA===", objectData);
+    objectData.secretmessage =
+      "7d6106259934034201145da543b145a2:32d7f27b4f6e9c791e3e76dba7a39db5";
 
     // Test Secret Message for Now, Use 123123 as the key...
-    objectData.secretmessage =
-      "fce603bf054edbc649dd1284e7578232:c445c21905089900ff74c59a6e8470f5";
-    objectData.key = "123123";
-
+    objectData.key = hashedKey("123123");
     let operationResult = decryptMessage(
       objectData.secretmessage,
       objectData.key
@@ -163,9 +166,11 @@ async function decode(objectData) {
 
       // Return Values...
       return { status: true, result: objectData };
+    } else {
+      throw "";
     }
   } catch (error) {
-    logger.error(`DECODE OPERATION ERROR: ${error}`);
+    // logger.error(`DECODE OPERATION ERROR: ${error}`);
     return { status: false };
   }
 }

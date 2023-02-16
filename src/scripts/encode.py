@@ -9,7 +9,7 @@ key = str(sys.argv[2])
 # Appending '#' as Terminating Character of Secret Message...
 secretMessage = f"{str(sys.argv[3])}#"
 
-filePath = os.path.abspath(rf'./original_files/{filename}')
+filePath = os.path.abspath(rf'./public/original_files/{filename}')
 
 if (os.path.exists(filePath)):
     # Open the GIF file...

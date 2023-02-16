@@ -21,8 +21,24 @@
 }
 
 .gif-container {
+  display: flex;
+  flex-direction: column;
   width: 40%;
+  max-height: 500px;
   min-width: 450px;
+  align-items: center;
+}
+
+.gif-info {
+  display: flex;
+  width: 80%;
+  justify-content: space-around;
+}
+
+.gif-result img {
+  height: 350px;
+  width: 350px;
+  object-fit: contain;
 }
 
 .result-container {

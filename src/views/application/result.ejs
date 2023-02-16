@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/styles.css" />
-    <link rel="stylesheet" href="/css/result.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/result.css" />
     <link rel="icon" href="/img/unseenIcon.png" type="image/x-icon" />
     <title>Unseen: Steganography On Animated GIFs</title>
   </head>
@@ -16,7 +16,13 @@
       <% if (result.operationName == "ENCODE"){ %>
       <fieldset class="gif-container">
         <legend class="form-info">OUTPUT</legend>
-        <div class="gif-result"></div>
+        <div class="gif-result">
+          <img src="original_files/<%= result.gifFile %>" alt="Encode Result" />
+        </div>
+        <div class="gif-info">
+          <div class="metrics">File Size: XX MB</div>
+          <div class="metrics">Duration: HH:MM:SS</div>
+        </div>
       </fieldset>
       <% } %>
       <fieldset class="result-container input-headers">
