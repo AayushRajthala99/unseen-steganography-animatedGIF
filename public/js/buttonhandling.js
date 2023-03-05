@@ -26,12 +26,6 @@ function updatePageThemeMode(themeMode) {
 
   const bodyElement = document.querySelector("body");
   themeToggleButton.textContent = themeMode;
-
-  if (themeMode === "LIGHT") {
-    bodyElement.classList.add("light-mode");
-    bodyElement.classList.remove("dark-mode");
-  } else {
-    bodyElement.classList.add("dark-mode");
-    bodyElement.classList.remove("light-mode");
-  }
+  bodyElement.classList.remove("DARK-mode", "LIGHT-mode");
+  bodyElement.classList.add(themeMode + "-mode");
 }

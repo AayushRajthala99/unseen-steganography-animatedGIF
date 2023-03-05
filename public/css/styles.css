@@ -94,11 +94,11 @@ body {
   height: 100vh;
 }
 
-.dark-mode {
+.DARK-mode {
   background-color: #212121;
 }
 
-.light-mode {
+.LIGHT-mode {
   background-color: #ffffff;
 }
 
