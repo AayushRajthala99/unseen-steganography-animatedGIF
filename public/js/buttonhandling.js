@@ -7,7 +7,11 @@ themeToggleButton.addEventListener("click", toggleThemeMode);
 
 function initializeThemeMode() {
   // Setting 'DARK' as the default theme if themeMode is Null...
-  let themeMode = localStorage.getItem("themeMode") || "DARK";
+  let themeMode = localStorage.getItem("themeMode");
+  if (themeMode !== "DARK" && themeMode !== "LIGHT") {
+    themeMode = "DARK";
+  }
+
   localStorage.setItem("themeMode", themeMode);
 
   updatePageThemeMode(themeMode);

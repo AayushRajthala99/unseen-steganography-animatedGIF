@@ -95,11 +95,11 @@ body {
 }
 
 .DARK-mode {
-  background-color: #212121;
+  background-color: #212121 !important;
 }
 
 .LIGHT-mode {
-  background-color: #ffffff;
+  background-color: #f2f2f2 !important;
 }
 
 header {
