@@ -6,7 +6,8 @@ const algorithm = "aes-256-cbc";
 function hashedKey(key) {
   const hash = crypto.createHash("md5");
   hash.update(key);
-  return hash.digest("hex");
+  key = hash.digest("hex");
+  return key;
 }
 
 function encryptMessage(message, key) {

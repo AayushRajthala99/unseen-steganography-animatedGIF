@@ -150,7 +150,7 @@ async function decode(objectData) {
   try {
     console.log("DECODE OBJECT DATA===", objectData);
     objectData.secretmessage =
-      "7d6106259934034201145da543b145a2:32d7f27b4f6e9c791e3e76dba7a39db5";
+      "6c89b95344dc45c36a751dbc36648cc0:c330af6747c9f461f0c95f84e2af2329a81062dad801fe3f52536cd82b094f27bb50f61195487fe8134e3586295c4fc7";
 
     // Test Secret Message for Now, Use 123123 as the key...
     objectData.key = hashedKey("123123");
