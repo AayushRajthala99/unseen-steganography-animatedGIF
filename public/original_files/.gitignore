@@ -1,2 +1,8 @@
 *
 !.gitignore
+
+# Exclusions in .gitignore
+!anime.gif
+!bean.gif
+!wall.gif
+!invalidFile.gif
