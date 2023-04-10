@@ -15,17 +15,17 @@ stegoPath = os.path.abspath(
 
 
 def LSBOperation(value, bit):  # This function performs LSB Operation...
-    result = bin(value)[2:]
+    RBit, GBit, BBit = value[0], value[1], value[2]
+    result = bin(RBit)[2:]
     result = str(result.zfill(8))
     result = result[:-1]+str(bit)
-    result = int(result, 2)
+    result = (int(result, 2), GBit, BBit)
     return result
 
 
 if (os.path.exists(filePath)):
     # Open the GIF file...
     image = Image.open(filePath)
-
     # Get the original image information
     original_format = image.format
     original_size = image.size
@@ -37,33 +37,12 @@ if (os.path.exists(filePath)):
     else:
         original_extension = None
 
-    # Create a list to store the pixel values of each frame
     try:
-        # Loop over each frame and convert to PIL Image object
-        frames = []
-        for frame in ImageSequence.Iterator(image):
-            frames.append(frame.convert('P', palette=Image.ADAPTIVE))
-
-        num_frames = len(frames)
-        original_format = image.format
-        original_size = image.size
-        original_mode = image.mode
-        original_info = image.info
-        original_palette = image.palette
-        if ('extension' in image.info):
-            original_extension = image.info["extension"]
-        else:
-            original_extension = None
-
-        # Appending 128 value to last 3 pixels to help in identifying
-        # If the selected GIF File is a Stego File or Not...
-
-        # frames[-1][-3] = 128
-        # frames[-1][-2] = 128
-        # frames[-1][-1] = 128
+        # Create a list to hold the modified frames...
+        modified_frames = []
+        num_frames = image.n_frames
 
         # Frame & Pixel Information...
-
         resolution = list(map(int, original_size))
         pixelCount = resolution[0]*resolution[1]
         totalPixels = num_frames * pixelCount
@@ -99,36 +78,51 @@ if (os.path.exists(filePath)):
         hiddenBits = list(binaryString)
         print(hiddenBits)
         bitIndex = 0
-        for frame in frames:
-            pixels = frame.load()
-            for x in range(frame.width):
-                for y in range(frame.height):
-                    # Modify pixel value...
+
+        # Iterate over all frames in the GIF
+        for frame_idx in range(num_frames):
+            # Select the current frame
+            image.seek(frame_idx)
+
+            # Convert the frame to RGB mode
+            rgb_frame = image.convert("RGB")
+
+            # Get the pixel access object for the frame
+            pixels = rgb_frame.load()
+
+            # Modify the pixel values as needed
+            for x in range(rgb_frame.width):
+                for y in range(rgb_frame.height):
+
+                    # Modifying Pixel Values...
                     if (bitIndex < len(hiddenBits)):
-                        print("BEFORE", pixels[x, y])
+                        # print("BEFORE", pixels[x, y])
 
                         # Performing LSB Operation...
                         pixels[x, y] = LSBOperation(
                             pixels[x, y], hiddenBits[bitIndex])
 
+                        # print("AFTER", pixels[x, y])
+
                         bitIndex += 1
-                        print("AFTER", pixels[x, y])
 
-        # Creating a new Stego GIF Image File with the Modified Frames...
-        new_gif = Image.new('P', frames[0].size)
+            # Convert the Modified Frame back to GIF mode
+            gif_frame = rgb_frame.convert(
+                "P", dither=Image.NONE, palette=Image.ADAPTIVE, colors=256)
 
-        if image.getpalette() is not None:
-            new_gif.putpalette(image.getpalette())
+            # Appending the Modified Frame to the List...
+            modified_frames.append(gif_frame)
 
-        new_gif.format = original_format
-        new_gif.info = original_info
+        # Save the modified GIF file using the modified_frames list
+        modified_frames[0].save(
+            stegoPath,
+            save_all=True,
+            append_images=modified_frames[1:],
+            format="GIF",
+            optimize=True
+        )
 
-        if (original_extension):
-            new_gif.info["extension"] = original_extension
-
-        new_gif.save(stegoPath, save_all=True,
-                     append_images=frames[1:])
-
+        # Check Operation for Modified GIF File...
         if (os.path.exists(stegoPath)):
             print(
                 f"--SUCCESS--[ {filename.replace('.gif','')}-stego.gif ] File Saved Successfully!")
@@ -138,7 +132,6 @@ if (os.path.exists(filePath)):
 
     except Exception as error:
         pass
-
 else:
     print("FILE DOES NOT EXIST")
 
