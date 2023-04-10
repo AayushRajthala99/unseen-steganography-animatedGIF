@@ -143,7 +143,7 @@ textarea {
   border: 1px solid #454545;
   background-color: #171717;
   border-radius: 5px;
-  color: #c4c4c4;
+  color: #ed7002;
   display: block;
   font-size: 0.813rem;
   font-weight: 400;
@@ -156,7 +156,6 @@ textarea {
 
 fieldset {
   color: #ed7002;
-  background-color: #212121;
   height: inherit;
   padding: 20px;
   border-color: #ed7002;
@@ -319,7 +318,6 @@ textarea:focus {
 
 .form-field::-webkit-scrollbar {
   width: 12px;
-  background-color: #212121;
 }
 
 .form-field::-webkit-scrollbar-thumb {

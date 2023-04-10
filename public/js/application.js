@@ -92,12 +92,14 @@ document.addEventListener("click", (event) => {
     const errordiv = document.querySelector("#operationError");
     errordiv.innerText = "";
     const secretInput = document.querySelector("#secretMessageField");
+    const secretMessage = secretInput.querySelector("#secretmessage");
     secretInput.style.display = "none";
     const childElements = secretInput.querySelectorAll("*");
     for (let i = 0; i < childElements.length; i++) {
       childElements[i].setAttribute("disabled", "");
       childElements[i].setAttribute("readonly", "");
     }
+    secretMessage.value = "";
     secretInput.setAttribute("disabled", "");
     secretInput.setAttribute("readonly", "");
   }

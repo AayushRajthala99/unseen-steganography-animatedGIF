@@ -3,6 +3,7 @@ const path = require("path");
 const { spawn } = require("child_process");
 const { logger } = require("../utils/logger");
 const { hashedKey, encryptMessage, decryptMessage } = require("../utils/utils");
+const { log } = require("console");
 
 // Python Script Paths...
 let encodeScriptPath = path.resolve("./src/scripts/encode.py");
@@ -67,6 +68,8 @@ async function process(req, res) {
         let encodeResult = await encode(requestObject);
         if (encodeResult.status) {
           let result = encodeResult.result;
+          result.stegFile =
+            result.gifFile.replaceAll(".gif", "") + "-stego.gif";
           console.log("ENCODE RESULT===", result);
           res.render("application/result", { result: result });
         } else {
