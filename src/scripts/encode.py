@@ -1,7 +1,7 @@
 import os
 import sys
 from PIL import Image, ImageSequence
-
+from os import path as directoryPath
 # Getting Python Argument Values...
 filename = str(sys.argv[1])
 key = str(sys.argv[2])
@@ -14,18 +14,27 @@ stegoPath = os.path.abspath(
     rf'./public/result_files/{filename.replace(".gif","")}-stego.gif')
 
 
+def convert_bytes(size):
+    """ Convert bytes to KB, or MB or GB"""
+    for x in ['bytes', 'KB', 'MB', 'GB']:
+        if size < 1024.0:
+            return "%3.1f %s" % (size, x)
+        size /= 1024.0
+
+
 def LSBOperation(value, bit):  # This function performs LSB Operation...
-    RBit, GBit, BBit = value[0], value[1], value[2]
-    result = bin(RBit)[2:]
-    result = str(result.zfill(8))
-    result = result[:-1]+str(bit)
-    result = (int(result, 2), GBit, BBit)
-    return result
+    if (len(bit) > 0):
+        result = bin(value)[2:]
+        result = str(result.zfill(8))
+        result = result[:-1]+str(bit)
+        value = int(result, 2)
+    return value
 
 
 if (os.path.exists(filePath)):
     # Open the GIF file...
     image = Image.open(filePath)
+
     # Get the original image information
     original_format = image.format
     original_size = image.size
@@ -48,7 +57,7 @@ if (os.path.exists(filePath)):
         totalPixels = num_frames * pixelCount
         totalBitsCount = len(secretMessage) * 8
 
-        print("\n\nTotal GIF Frames == ", num_frames)
+        print("\nTotal GIF Frames == ", num_frames)
         print("Pixels per Frame == ", pixelCount)
         print("Total Pixel Count == ", totalPixels)
 
@@ -69,14 +78,15 @@ if (os.path.exists(filePath)):
         # Operation Related Analysis...
         print("\nSECRET MESSAGE (HEX) == ", hex)
         print("\nSECRET MESSAGE (BIN) == ", binaryString)
-        print("\n---Operation Analysis---")
+        print("\n---------OPERATIONAL ANALYSIS---------")
         print("Theoretical Binary Bits Length == ", len(hex*8))
         print("Calculated Binary Bits Length == ", len(binaryString))
         print("Bits Length Match == ", (len(hex*8)) == len(binaryString))
+        print("--------------------------------------")
 
         # LSB ALGORITHM OPERATIONS...
         hiddenBits = list(binaryString)
-        print(hiddenBits)
+        hiddenBits = [hiddenBits[i:i+3] for i in range(0, len(hiddenBits), 3)]
         bitIndex = 0
 
         # Iterate over all frames in the GIF
@@ -97,10 +107,24 @@ if (os.path.exists(filePath)):
                     # Modifying Pixel Values...
                     if (bitIndex < len(hiddenBits)):
                         # print("BEFORE", pixels[x, y])
+                        # The "value" variable stores a tuple of RGB Values as (R,G,B)...
+                        value = pixels[x, y]
+
+                        # Hidden Bits to Pixel's (R,G,B) Mapping...
+                        RBit, GBit, BBit = value[0], value[1], value[2]
+                        bitList = hiddenBits[bitIndex]
+                        if (len(bitList) == 3):
+                            bit1, bit2, bit3 = bitList[0], bitList[1], bitList[2]
+                        elif (len(bitList) == 2):
+                            bit1, bit2, bit3 = bitList[0], bitList[1], ""
+                        elif (len(bitList) == 1):
+                            bit1, bit2, bit3 = bitList[0], "", ""
+                        else:
+                            bit1, bit2, bit3 = "", "", ""
 
                         # Performing LSB Operation...
-                        pixels[x, y] = LSBOperation(
-                            pixels[x, y], hiddenBits[bitIndex])
+                        pixels[x, y] = (LSBOperation(RBit, bit1), LSBOperation(
+                            GBit, bit2), LSBOperation(BBit, bit3))
 
                         # print("AFTER", pixels[x, y])
 
@@ -124,8 +148,13 @@ if (os.path.exists(filePath)):
 
         # Check Operation for Modified GIF File...
         if (os.path.exists(stegoPath)):
+            originalFileSize = convert_bytes(directoryPath.getsize(filePath))
+            stegoFileSize = convert_bytes(directoryPath.getsize(stegoPath))
             print(
-                f"--SUCCESS--[ {filename.replace('.gif','')}-stego.gif ] File Saved Successfully!")
+                f"\n--SUCCESS--[ {filename.replace('.gif','')}-stego.gif ] File Saved Successfully!")
+            print(f"--ORIGINAL FILE SIZE--[ {originalFileSize} ]")
+            print(f"--STEGO FILE SIZE--[ {stegoFileSize} ]")
+
         else:
             print(
                 f"--ERROR--File Save Error for [ {filename.replace('.gif','')}-stego.gif ]")
