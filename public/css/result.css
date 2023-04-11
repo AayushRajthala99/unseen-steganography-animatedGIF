@@ -64,8 +64,8 @@
 }
 
 .output-value {
-  min-width: 430px;
-  max-width: 430px;
+  min-width: 375px;
+  max-width: 375px;
   height: fit-content;
   max-height: 60px;
   text-align: justify;

@@ -1,6 +1,6 @@
 import os
 import sys
-from PIL import Image, ImageSequence
+from PIL import Image
 from os import path as directoryPath
 
 # Getting Python Argument Values...
@@ -10,8 +10,8 @@ key = str(sys.argv[2])
 # Appending '$#' as Terminating Character of Secret Message... [ ASCII '$' = BIN '00100100', ASCII '#' = BIN '00100011' ]
 secretMessage = f"{str(sys.argv[3])}$#"
 
-filePath = os.path.abspath(rf'./public/original_files/{filename}')
-stegoPath = os.path.abspath(
+filePath = directoryPath.abspath(rf'./public/original_files/{filename}')
+stegoPath = directoryPath.abspath(
     rf'./public/result_files/{filename.replace(".gif","")}-stego.gif')
 
 
@@ -32,7 +32,7 @@ def LSBOperation(value, bit):  # This function performs LSB Operation...
     return value
 
 
-if (os.path.exists(filePath)):
+if (directoryPath.exists(filePath)):
     # Open the GIF file...
     image = Image.open(filePath)
 
@@ -148,7 +148,7 @@ if (os.path.exists(filePath)):
         )
 
         # Check Operation for Modified GIF File...
-        if (os.path.exists(stegoPath)):
+        if (directoryPath.exists(stegoPath)):
             originalFileSize = convert_bytes(directoryPath.getsize(filePath))
             stegoFileSize = convert_bytes(directoryPath.getsize(stegoPath))
             print(
