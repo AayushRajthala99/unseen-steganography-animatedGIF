@@ -130,6 +130,12 @@ if (directoryPath.exists(filePath)):
                         # print("AFTER", pixels[x, y])
 
                         bitIndex += 1
+                    else:
+                        break
+                else:
+                    continue
+
+                break
 
             # Convert the Modified Frame back to GIF mode...
             gif_frame = rgb_frame.convert(

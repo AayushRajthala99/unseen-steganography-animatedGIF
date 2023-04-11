@@ -30,6 +30,7 @@ if (directoryPath.exists(stegoPath)):
 
         # LSB REVERSAL OPERATIONS...
         hiddenBits = ""
+        binaryString = ""
 
         # This value represents "$#" in ASCII which is the terminating character...
         comparisonValue = "0010010000100011"
@@ -53,10 +54,28 @@ if (directoryPath.exists(stegoPath)):
 
                     # Hidden Bits to Pixel's (R,G,B) Mapping...
                     RBit, GBit, BBit = value[0], value[1], value[2]
+                    bit1, bit2, bit3 = LSBReversal(
+                        RBit), LSBReversal(GBit), LSBReversal(BBit)
+                    hiddenBits += bit1
+                    if ((len(hiddenBits) >= 16) and (hiddenBits[-16:] == comparisonValue)):
+                        binaryString = hiddenBits
+                        break
 
-        # Secret Message Bits Calculation...
-        hex = ''
-        binaryString = ''
+                    hiddenBits += bit2
+                    if ((len(hiddenBits) >= 16) and (hiddenBits[-16:] == comparisonValue)):
+                        binaryString = hiddenBits
+                        break
+
+                    hiddenBits += bit3
+                    if ((len(hiddenBits) >= 16) and (hiddenBits[-16:] == comparisonValue)):
+                        binaryString = hiddenBits
+                        break
+                else:
+                    continue
+
+                break
+
+        hex = ""
 
         print("\n---BINARY TO HEX CONVERSION RESULTS---")
         for i in range(len(hex)):
