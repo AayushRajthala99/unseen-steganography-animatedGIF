@@ -6,15 +6,14 @@ from os import path as directoryPath
 # Getting Python Argument Values...
 filename = str(sys.argv[1])
 key = str(sys.argv[2])
-
-secretMessage = f"{str(sys.argv[3])}"
+secretMessage = str(sys.argv[3])
 
 filePath = directoryPath.abspath(rf'./public/original_files/{filename}')
 stegoPath = directoryPath.abspath(
     rf'./public/result_files/{filename.replace(".gif","")}-{key}-stego.gif')
 
 
-def convert_bytes(size):
+def convert_bytes(size):  # This function converts bytes to Higher Sizes...
     """ Convert bytes to KB, or MB or GB"""
     for x in ['bytes', 'KB', 'MB', 'GB']:
         if size < 1024.0:
@@ -68,6 +67,7 @@ if (directoryPath.exists(filePath)):
         binaryString = ""
 
         print("\n---HEX TO BINARY CONVERSION RESULTS---")
+        # Binary Bits Calculation for Hex Values before the colon ":" symbol...
         for i in range(0, len(hexBeforeColon), 2):
             # Split hex string into 2-digit chunks
             hex_byte = hexBeforeColon[i:i+2]
@@ -84,6 +84,7 @@ if (directoryPath.exists(filePath)):
         # Appending the binary value of ":"...
         binaryString += "00111010"
 
+        # Binary Bits Calculation for Hex Values after the colon ":" symbol...
         for i in range(0, len(hexAfterColon), 2):
             # Split hex string into 2-digit chunks
             hex_byte = hexAfterColon[i:i+2]
@@ -154,8 +155,10 @@ if (directoryPath.exists(filePath)):
                         # print("AFTER", pixels[x, y])
 
                         bitIndex += 1
+
                     else:
                         break
+
                 else:
                     continue
 
@@ -188,7 +191,7 @@ if (directoryPath.exists(filePath)):
 
         else:
             print(
-                f"--ERROR--File Save Error for [ {filename.replace('.gif','')}-stego.gif ]")
+                f"--ERROR--Save Error for [ {filename.replace('.gif','')}-{key}-stego.gif ]")
 
     except Exception as error:
         pass

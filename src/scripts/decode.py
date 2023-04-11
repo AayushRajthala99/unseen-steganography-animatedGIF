@@ -7,18 +7,17 @@ from os import path as directoryPath
 filename = str(sys.argv[1])
 key = str(sys.argv[2])
 
-stegoPath = directoryPath.abspath(
-    rf'./public/result_files/{filename.replace(".gif","")}-stego.gif')
+stegoPath = directoryPath.abspath(rf'./public/result_files/{filename}')
 
 
-# This function performs Reversal of LSB Operation...
-def LSBReversal(value):
+def LSBReversal(value):  # This function performs Reversal of LSB Operation...
     result = bin(value)[2:]
     result = str(result.zfill(8))
     result = str(result[-1])
     return result
 
 
+# This function returns the hex value of a 4 bit binary value...
 def returnHex(value):
     decimal = int(value, 2)
     hexChunk = hex(decimal)[2:]
@@ -31,16 +30,15 @@ if (directoryPath.exists(stegoPath)):
     image = Image.open(stegoPath)
 
     try:
-        # Create a list to hold the modified frames...
-        modified_frames = []
+        # Calculating Number of Frames in the GIF File...
         num_frames = image.n_frames
-
-        # LSB REVERSAL OPERATIONS...
-        hiddenBits = ""
-        binaryString = ""
 
         # This value represents "$#" in ASCII which is the terminating character...
         comparisonValue = "0010010000100011"
+
+        # Variables to Store LSB REVERSAL Results...
+        hiddenBits = ""
+        binaryString = ""
 
         # Iterate over all frames in the GIF...
         for frame_idx in range(num_frames):
@@ -61,8 +59,11 @@ if (directoryPath.exists(stegoPath)):
 
                     # Hidden Bits to Pixel's (R,G,B) Mapping...
                     RBit, GBit, BBit = value[0], value[1], value[2]
+
+                    # LSB REVERSAL OPERATION...
                     bit1, bit2, bit3 = LSBReversal(
                         RBit), LSBReversal(GBit), LSBReversal(BBit)
+
                     hiddenBits += bit1
                     if ((len(hiddenBits) >= 16) and (hiddenBits[-16:] == comparisonValue)):
                         binaryString = hiddenBits[:-16]
@@ -77,6 +78,7 @@ if (directoryPath.exists(stegoPath)):
                     if ((len(hiddenBits) >= 16) and (hiddenBits[-16:] == comparisonValue)):
                         binaryString = hiddenBits[:-16]
                         break
+
                 else:
                     continue
 
