@@ -2,12 +2,13 @@ import os
 import sys
 from PIL import Image, ImageSequence
 from os import path as directoryPath
+
 # Getting Python Argument Values...
 filename = str(sys.argv[1])
 key = str(sys.argv[2])
 
-# Appending '#' as Terminating Character of Secret Message... [ ASCII '#' = BIN '00100011' ]
-secretMessage = f"{str(sys.argv[3])}#"
+# Appending '$#' as Terminating Character of Secret Message... [ ASCII '$' = BIN '00100100', ASCII '#' = BIN '00100011' ]
+secretMessage = f"{str(sys.argv[3])}$#"
 
 filePath = os.path.abspath(rf'./public/original_files/{filename}')
 stegoPath = os.path.abspath(
@@ -89,18 +90,18 @@ if (os.path.exists(filePath)):
         hiddenBits = [hiddenBits[i:i+3] for i in range(0, len(hiddenBits), 3)]
         bitIndex = 0
 
-        # Iterate over all frames in the GIF
+        # Iterate over all frames in the GIF...
         for frame_idx in range(num_frames):
             # Select the current frame
             image.seek(frame_idx)
 
-            # Convert the frame to RGB mode
+            # Convert the frame to RGB mode...
             rgb_frame = image.convert("RGB")
 
-            # Get the pixel access object for the frame
+            # Get the pixel access object for the frame...
             pixels = rgb_frame.load()
 
-            # Modify the pixel values as needed
+            # Modify the pixel values as needed...
             for x in range(rgb_frame.width):
                 for y in range(rgb_frame.height):
 
@@ -130,14 +131,14 @@ if (os.path.exists(filePath)):
 
                         bitIndex += 1
 
-            # Convert the Modified Frame back to GIF mode
+            # Convert the Modified Frame back to GIF mode...
             gif_frame = rgb_frame.convert(
                 "P", dither=Image.NONE, palette=Image.ADAPTIVE, colors=256)
 
             # Appending the Modified Frame to the List...
             modified_frames.append(gif_frame)
 
-        # Save the modified GIF file using the modified_frames list
+        # Save the modified GIF file using the modified_frames list...
         modified_frames[0].save(
             stegoPath,
             save_all=True,
