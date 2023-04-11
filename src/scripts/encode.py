@@ -7,8 +7,7 @@ from os import path as directoryPath
 filename = str(sys.argv[1])
 key = str(sys.argv[2])
 
-# Appending '$#' as Terminating Character of Secret Message... [ ASCII '$' = BIN '00100100', ASCII '#' = BIN '00100011' ]
-secretMessage = f"{str(sys.argv[3])}$#"
+secretMessage = f"{str(sys.argv[3])}"
 
 filePath = directoryPath.abspath(rf'./public/original_files/{filename}')
 stegoPath = directoryPath.abspath(
@@ -63,21 +62,46 @@ if (directoryPath.exists(filePath)):
         print("Total Pixel Count == ", totalPixels)
 
         # Secret Message Bits Calculation...
-        hex = secretMessage
-        binaryString = ''
+        hexMessage = secretMessage.split(":")
+        hexBeforeColon = hexMessage[0]
+        hexAfterColon = hexMessage[1]
+        binaryString = ""
 
         print("\n---HEX TO BINARY CONVERSION RESULTS---")
-        for i in range(len(hex)):
-            char = ord(hex[i])
-            binary = bin(char)[2:]
-            binary = binary.zfill(8)
-            binaryString += binary
-            # print(hex[i], binary)
-            if (hex[i] == '#'):
-                break
+        for i in range(0, len(hexBeforeColon), 2):
+            # Split hex string into 2-digit chunks
+            hex_byte = hexBeforeColon[i:i+2]
+
+            # Convert hex to decimal
+            decimal_byte = int(hex_byte, 16)
+
+            # Convert decimal to binary and pad with leading zeros
+            binary_byte = bin(decimal_byte)[2:].zfill(8)
+
+            # Append binary byte to binary string
+            binaryString += binary_byte
+
+        # Appending the binary value of ":"...
+        binaryString += "00111010"
+
+        for i in range(0, len(hexAfterColon), 2):
+            # Split hex string into 2-digit chunks
+            hex_byte = hexAfterColon[i:i+2]
+
+            # Convert hex to decimal
+            decimal_byte = int(hex_byte, 16)
+
+            # Convert decimal to binary and pad with leading zeros
+            binary_byte = bin(decimal_byte)[2:].zfill(8)
+
+            # Append binary byte to binary string
+            binaryString += binary_byte
+
+        # Appending '$#' as Terminating Character of Secret Message... [ ASCII '$' = BIN '00100100', ASCII '#' = BIN '00100011' ]
+        binaryString += "0010010000100011"
 
         # Operation Related Analysis...
-        print("\nSECRET MESSAGE (HEX) == ", hex)
+        print("\nSECRET MESSAGE (HEX) == ", (secretMessage+"$#"))
         print("\nSECRET MESSAGE (BIN) == ", binaryString)
         print("\n---------OPERATIONAL ANALYSIS---------")
         print("Theoretical Binary Bits Length == ", len(hex*8))
