@@ -16,13 +16,16 @@
       <% if (result.operationName == "ENCODE"){ %>
       <fieldset class="gif-container">
         <legend class="form-info">OUTPUT</legend>
+        <div class="gif-info">
+          <div class="metrics">Original Size: XX MB</div>
+          <div class="metrics">Stego Size: XX MB</div>
+        </div>
         <div class="gif-result">
           <img src="result_files/<%= result.stegFile %>" alt="Encode Result" />
         </div>
-        <div class="gif-info">
-          <div class="metrics">File Size: XX MB</div>
-          <div class="metrics">Duration: HH:MM:SS</div>
-        </div>
+        <a href="result_files/<%= result.stegFile %>" download="">
+          <button class="download-button">DOWNLOAD</button></a
+        >
       </fieldset>
       <% } %>
       <fieldset class="result-container input-headers">

@@ -14,6 +14,31 @@
   font-weight: 600;
 }
 
+.return:hover {
+  border: 2px solid #222224;
+}
+
+.download-button {
+  cursor: pointer;
+  background-color: #ed7002;
+  border-color: #222224;
+  border: 2px solid transparent;
+  color: #222224;
+  font-size: 1.2rem;
+  border-radius: 0.3rem;
+  padding: 0.8rem 1.8rem;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  height: 50px;
+  font-weight: 600;
+  align-self: center;
+  align-items: center;
+}
+
+.download-button:hover {
+  border: 2px solid #222224;
+}
+
 .output-wrapper {
   display: flex;
   width: 100%;
@@ -31,14 +56,20 @@
 
 .gif-info {
   display: flex;
-  width: 80%;
+  width: 90%;
   justify-content: space-around;
 }
 
+.gif-result {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .gif-result img {
-  height: 350px;
+  height: fit-content;
   width: 350px;
   object-fit: contain;
+  border: 3px solid #ed7002;
 }
 
 .result-container {
