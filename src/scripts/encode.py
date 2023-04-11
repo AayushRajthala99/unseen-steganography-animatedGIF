@@ -12,7 +12,7 @@ secretMessage = f"{str(sys.argv[3])}$#"
 
 filePath = directoryPath.abspath(rf'./public/original_files/{filename}')
 stegoPath = directoryPath.abspath(
-    rf'./public/result_files/{filename.replace(".gif","")}-stego.gif')
+    rf'./public/result_files/{filename.replace(".gif","")}-{key}-stego.gif')
 
 
 def convert_bytes(size):
@@ -152,7 +152,7 @@ if (directoryPath.exists(filePath)):
             originalFileSize = convert_bytes(directoryPath.getsize(filePath))
             stegoFileSize = convert_bytes(directoryPath.getsize(stegoPath))
             print(
-                f"\n--SUCCESS--[ {filename.replace('.gif','')}-stego.gif ] File Saved Successfully!")
+                f"\n--SUCCESS--[ {filename.replace('.gif','')}-{key}-stego.gif ] File Saved Successfully!")
             print(f"--ORIGINAL FILE SIZE--[ {originalFileSize} ]")
             print(f"--STEGO FILE SIZE--[ {stegoFileSize} ]")
 

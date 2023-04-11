@@ -13,6 +13,7 @@ function hashedKey(key) {
 function encryptMessage(message, key) {
   try {
     // Message Encryption Code...
+    key = hashedKey(key);
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv(algorithm, key, iv);
     let encryptedMessage = cipher.update(message, "utf8", "hex");

@@ -4,6 +4,7 @@ const { spawn } = require("child_process");
 const { logger } = require("../utils/logger");
 const { hashedKey, encryptMessage, decryptMessage } = require("../utils/utils");
 const { log } = require("console");
+const { hash } = require("bcrypt");
 
 // Python Script Paths...
 let encodeScriptPath = path.resolve("./src/scripts/encode.py");
@@ -55,7 +56,7 @@ async function process(req, res) {
     let requestObject = {
       operationName: null,
       gifFile: gifFile,
-      key: hashedKey(key),
+      key: key,
       secretmessage: null,
     };
 
@@ -69,7 +70,11 @@ async function process(req, res) {
         if (encodeResult.status) {
           let result = encodeResult.result;
           result.stegFile =
-            result.gifFile.replaceAll(".gif", "") + "-stego.gif";
+            result.gifFile.replaceAll(".gif", "") +
+            "-" +
+            result.key +
+            "-stego.gif";
+          result.key = hashedKey(result.key);
           console.log("ENCODE RESULT===", result);
           res.render("application/result", { result: result });
         } else {
