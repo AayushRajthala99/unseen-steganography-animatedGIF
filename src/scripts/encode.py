@@ -100,14 +100,16 @@ if (directoryPath.exists(filePath)):
 
         # Appending '$#' as Terminating Character of Secret Message... [ ASCII '$' = BIN '00100100', ASCII '#' = BIN '00100011' ]
         binaryString += "0010010000100011"
+        finalSecretMessage = secretMessage+"$#"
 
         # Operation Related Analysis...
-        print("\nSECRET MESSAGE (HEX) == ", (secretMessage+"$#"))
+        print("\nSECRET MESSAGE (HEX) == ", finalSecretMessage)
         print("\nSECRET MESSAGE (BIN) == ", binaryString)
         print("\n---------OPERATIONAL ANALYSIS---------")
-        print("Theoretical Binary Bits Length == ", len(hex*8))
+        print("Theoretical Binary Bits Length == ", len(finalSecretMessage)*8)
         print("Calculated Binary Bits Length == ", len(binaryString))
-        print("Bits Length Match == ", (len(hex*8)) == len(binaryString))
+        print("Bits Length Match == ", len(
+            (finalSecretMessage)*8) == len(binaryString))
         print("--------------------------------------")
 
         # LSB ALGORITHM OPERATIONS...
