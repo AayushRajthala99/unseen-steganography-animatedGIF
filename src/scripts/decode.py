@@ -5,7 +5,6 @@ from os import path as directoryPath
 
 # Getting Python Argument Values...
 filename = str(sys.argv[1])
-key = str(sys.argv[2])
 
 stegoPath = directoryPath.abspath(rf'./public/result_files/{filename}')
 
@@ -21,7 +20,7 @@ def LSBReversal(value):  # This function performs Reversal of LSB Operation...
 def returnHex(value):
     decimal = int(value, 2)
     hexChunk = hex(decimal)[2:]
-    print(hexChunk)
+    # print(hexChunk)
     return (hexChunk)
 
 
