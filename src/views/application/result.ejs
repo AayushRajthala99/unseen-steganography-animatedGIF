@@ -17,8 +17,8 @@
       <fieldset class="gif-container">
         <legend class="form-info">OUTPUT</legend>
         <div class="gif-info">
-          <div class="metrics">Original Size: XX MB</div>
-          <div class="metrics">Stego Size: XX MB</div>
+          <div class="metrics">Original Size: <%= result.originalSize %></div>
+          <div class="metrics">Stego Size: <%= result.stegoSize %></div>
         </div>
         <div class="gif-result">
           <img src="result_files/<%= result.stegFile %>" alt="Encode Result" />

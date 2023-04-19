@@ -3,7 +3,7 @@ const path = require("path");
 const { spawn } = require("child_process");
 const { logger } = require("../utils/logger");
 const { hashedKey, encryptMessage, decryptMessage } = require("../utils/utils");
-const { log } = require("console");
+const { log, error } = require("console");
 const { hash } = require("bcrypt");
 
 // Python Script Paths...
@@ -18,20 +18,23 @@ async function runPythonScript(script, filename, key, secretMessage) {
       key,
       secretMessage,
     ]);
-
+    let outputMessage;
+    let errorMessage;
     pythonProcess.stdout.on("data", (data) => {
       console.log(`Python script output: ${data}`);
+      outputMessage = data;
     });
 
     pythonProcess.stderr.on("data", (data) => {
       console.error(`Python script error: ${data}`);
+      errorMessage = data;
     });
 
     pythonProcess.on("close", (code) => {
       if (code == 0) {
-        resolve({ code: 0 });
+        resolve({ message: outputMessage, code: 0 });
       } else {
-        reject({ error: code });
+        reject({ message: errorMessage, error: code });
       }
     });
   });
@@ -127,7 +130,7 @@ async function encode(objectData) {
         `${objectData.secretmessage}`,
       ];
 
-      let message;
+      let code, message;
 
       await runPythonScript(
         encodeArguments[0],
@@ -136,13 +139,34 @@ async function encode(objectData) {
         encodeArguments[3]
       )
         .then((result) => {
-          message = result.code;
+          code = result.code;
+          message = result.message;
         })
         .catch((error) => {
-          message = error.error;
+          code = error.error;
+          message = error.message;
         });
 
-      if (message == 0) {
+      if (code == 0) {
+        // Getting File Size from the Parsed Python Output...
+        let byteString = Buffer.from(message, "hex");
+        utfValue = byteString.toString("utf8");
+
+        // Regex Declaration for File Sizes...
+        const orgRegex = /--ORIGINAL FILE SIZE--\[ ([\d.]+ [KMGT]?B) \]/;
+        const stegRegex = /--STEGO FILE SIZE--\[ ([\d.]+ [KMGT]?B) \]/;
+
+        // Regex Match Operation...
+        const orgMatch = utfValue.match(orgRegex);
+        const stegMatch = utfValue.match(stegRegex);
+
+        if (orgMatch && stegMatch) {
+          objectData.originalSize = orgMatch[1];
+          objectData.stegoSize = stegMatch[1];
+        } else {
+          objectData.originalSize = "";
+          objectData.stegoSize = "";
+        }
         return { status: true, result: objectData };
       } else {
         throw { message: message };
