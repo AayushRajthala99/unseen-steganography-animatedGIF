@@ -3,8 +3,6 @@ const path = require("path");
 const { spawn } = require("child_process");
 const { logger } = require("../utils/logger");
 const { hashedKey, encryptMessage, decryptMessage } = require("../utils/utils");
-const { log, error } = require("console");
-const { hash } = require("bcrypt");
 
 // Python Script Paths...
 let encodeScriptPath = path.resolve("./src/scripts/encode.py");
