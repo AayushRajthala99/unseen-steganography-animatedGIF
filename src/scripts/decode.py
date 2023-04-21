@@ -28,7 +28,6 @@ if (directoryPath.exists(stegoPath)):
     hexFile.close()
 
     hiddenBitsLength = len(hexString)*4+4
-    print(hiddenBitsLength)
 
     # Open the GIF file...
     image = Image.open(stegoPath)
