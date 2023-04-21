@@ -118,8 +118,8 @@
 }
 
 .operation-value {
-  width: 100%;
   min-width: 375px;
+  max-width: 375px;
   max-height: 60px;
   height: fit-content;
   text-align: center;

@@ -71,6 +71,8 @@ async function process(req, res) {
         let encodeResult = await encode(requestObject);
         if (encodeResult.status) {
           let result = encodeResult.result;
+          result.key = hashedKey(result.key);
+
           result.stegFile =
             result.gifFile.replaceAll(".gif", "") +
             "-" +
@@ -78,7 +80,7 @@ async function process(req, res) {
             "-" +
             (result.secretmessage.length * 4 + 4) +
             "-stego.gif";
-          result.key = hashedKey(result.key);
+
           console.log("ENCODE RESULT===", result);
           res.render("application/result", { result: result });
         } else {
@@ -127,7 +129,7 @@ async function encode(objectData) {
       encodeArguments = [
         `${encodeScriptPath}`,
         `${objectData.gifFile}`,
-        `${objectData.key}`,
+        `${hashedKey(objectData.key)}`,
         `${objectData.secretmessage}`,
       ];
 
