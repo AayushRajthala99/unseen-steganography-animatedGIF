@@ -100,7 +100,9 @@ if (directoryPath.exists(filePath)):
         hiddenBits = [hiddenBits[i:i+3] for i in range(0, len(hiddenBits), 3)]
         bitIndex = 0
 
-        stegoFilename = rf'{filename.replace(".gif","")}-{key}-stego.gif'
+        stegoFilename = rf"{filename.replace('-stego','')}"
+        stegoFilename = rf"{stegoFilename.replace('.gif','')}-{key}-stego.gif"
+
         stegoPath = directoryPath.abspath(
             rf'./public/result_files/{stegoFilename}')
 

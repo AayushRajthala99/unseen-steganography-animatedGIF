@@ -3,7 +3,6 @@ const path = require("path");
 const { spawn } = require("child_process");
 const { logger } = require("../utils/logger");
 const { hashedKey, encryptMessage, decryptMessage } = require("../utils/utils");
-const { hash } = require("bcrypt");
 
 // Python Script Paths...
 let encodeScriptPath = path.resolve("./src/scripts/encode.py");
@@ -96,14 +95,15 @@ async function process(req, res) {
         let decodeResult = await decode(requestObject);
         if (decodeResult.status) {
           result = decodeResult.result;
+
           console.log("\nDECODE RESULT===", result);
           res.render("application/result", { result: result });
         } else {
-          throw "";
+          throw decodeResult.message;
         }
       }
     } catch (error) {
-      throw { message: "ERROR PERFORMING DECODE OPERATION" };
+      throw { message: error };
     }
   } catch (error) {
     logger.error(`START PROCESS ERROR: ${error.message}`);
@@ -175,7 +175,7 @@ async function encode(objectData) {
     }
   } catch (error) {
     logger.error(`ENCODE OPERATION ERROR: ${error.message}`);
-    return { status: false };
+    return { status: false, message: error.message };
   }
 }
 
@@ -228,14 +228,14 @@ async function decode(objectData) {
         // Return Values...
         return { status: true, result: objectData };
       } else {
-        throw "";
+        throw { message: operationResult.message };
       }
     } else {
       throw { message: message };
     }
   } catch (error) {
-    logger.error(`DECODE OPERATION ERROR: ${error}`);
-    return { status: false };
+    logger.error(`DECODE OPERATION ERROR: ${error.message}`);
+    return { status: false, message: error.message };
   }
 }
 
