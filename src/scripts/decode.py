@@ -7,7 +7,6 @@ from os import path as directoryPath
 filename = str(sys.argv[1])
 
 stegoPath = directoryPath.abspath(rf'./public/result_files/{filename}')
-hiddenBitsLength = int(filename.split("-")[2])
 
 
 def LSBReversal(value):  # This function performs Reversal of LSB Operation...
@@ -23,6 +22,14 @@ def returnHex(value):
 
 
 if (directoryPath.exists(stegoPath)):
+    hexFile = open(directoryPath.abspath(
+        rf'./public/txt/{filename.replace("gif","txt")}'), 'r')
+    hexString = hexFile.read()
+    hexFile.close()
+
+    hiddenBitsLength = len(hexString)*4+4
+    print(hiddenBitsLength)
+
     # Open the GIF file...
     image = Image.open(stegoPath)
 
@@ -70,7 +77,12 @@ if (directoryPath.exists(stegoPath)):
 
                 break
 
-        hexString = ""
+            else:
+                continue
+
+            break
+
+        tempString = ""
 
         # Splitting BinaryList to 8 Bits Chunk...
         binaryList = [binaryString[i:i+8]
@@ -78,19 +90,17 @@ if (directoryPath.exists(stegoPath)):
 
         print("\n---BINARY TO HEX CONVERSION RESULTS---")
         for value in binaryList:
+            value = value.zfill(8)
+
             if (value == "00111010"):
-                hexString += ":"
+                tempString += ":"
+
             else:
                 # Splitting 8 Bit Chunk to 2*4 Bits Chunk...
                 value1 = value[:4]
                 value2 = value[4:]
 
-                hexString = hexString + returnHex(value1) + returnHex(value2)
-
-        hexFile = open(directoryPath.abspath(
-            rf'./public/txt/{filename.replace("gif","txt")}'), 'r')
-        hexString = hexFile.read()
-        hexFile.close()
+                tempString += returnHex(value1) + returnHex(value2)
 
         # print("SECRET MESSAGE (BIN) == ", binaryString)
         print("SECRET MESSAGE (HEX) == ", hexString)

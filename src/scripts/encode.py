@@ -97,11 +97,10 @@ if (directoryPath.exists(filePath)):
 
         # LSB ALGORITHM OPERATIONS...
         hiddenBits = list(binaryString)
-        hiddenBitsLength = len(binaryString)
         hiddenBits = [hiddenBits[i:i+3] for i in range(0, len(hiddenBits), 3)]
         bitIndex = 0
 
-        stegoFilename = rf'{filename.replace(".gif","")}-{key}-{hiddenBitsLength}-stego.gif'
+        stegoFilename = rf'{filename.replace(".gif","")}-{key}-stego.gif'
         stegoPath = directoryPath.abspath(
             rf'./public/result_files/{stegoFilename}')
 
@@ -182,13 +181,13 @@ if (directoryPath.exists(filePath)):
             originalFileSize = convert_bytes(directoryPath.getsize(filePath))
             stegoFileSize = convert_bytes(directoryPath.getsize(stegoPath))
             print(
-                f"\n--SUCCESS--[ {filename.replace('.gif','')}-{key}-{hiddenBitsLength}-stego.gif ] File Saved Successfully!")
+                f"\n--SUCCESS--[ {filename.replace('.gif','')}-{key}-stego.gif ] File Saved Successfully!")
             print(f"--ORIGINAL FILE SIZE--[ {originalFileSize} ]")
             print(f"--STEGO FILE SIZE--[ {stegoFileSize} ]")
 
         else:
             print(
-                f"--ERROR--Save Error for [ {filename.replace('.gif','')}-{key}-{hiddenBitsLength}-stego.gif ]")
+                f"--ERROR--Save Error for [ {filename.replace('.gif','')}-{key}-stego.gif ]")
 
     except Exception as error:
         pass

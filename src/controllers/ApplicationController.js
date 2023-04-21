@@ -77,8 +77,6 @@ async function process(req, res) {
             result.gifFile.replaceAll(".gif", "") +
             "-" +
             result.key +
-            "-" +
-            (result.secretmessage.length * 4 + 4) +
             "-stego.gif";
 
           console.log("ENCODE RESULT===", result);
