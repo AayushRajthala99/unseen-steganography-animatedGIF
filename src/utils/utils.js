@@ -34,6 +34,7 @@ function encryptMessage(message, key) {
 function decryptMessage(message, key) {
   try {
     // Message Decryption Code...
+    key = hashedKey(key);
     const parts = message.split(":");
     const iv = Buffer.from(parts.shift(), "hex");
     const encrypted = Buffer.from(parts.join(":"), "hex");

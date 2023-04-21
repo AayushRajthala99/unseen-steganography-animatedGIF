@@ -7,20 +7,18 @@ from os import path as directoryPath
 filename = str(sys.argv[1])
 
 stegoPath = directoryPath.abspath(rf'./public/result_files/{filename}')
+hiddenBitsLength = int(filename.split("-")[2])
 
 
 def LSBReversal(value):  # This function performs Reversal of LSB Operation...
     result = bin(value)[2:]
-    result = str(result.zfill(8))
     result = str(result[-1])
     return result
 
 
 # This function returns the hex value of a 4 bit binary value...
 def returnHex(value):
-    decimal = int(value, 2)
-    hexChunk = hex(decimal)[2:]
-    # print(hexChunk)
+    hexChunk = hex(int(value, 2))[2:]
     return (hexChunk)
 
 
@@ -32,11 +30,8 @@ if (directoryPath.exists(stegoPath)):
         # Calculating Number of Frames in the GIF File...
         num_frames = image.n_frames
 
-        # This value represents "$#" in ASCII which is the terminating character...
-        comparisonValue = "0010010000100011"
-
         # Variables to Store LSB REVERSAL Results...
-        hiddenBits = ""
+        count = 1
         binaryString = ""
 
         # Iterate over all frames in the GIF...
@@ -54,29 +49,21 @@ if (directoryPath.exists(stegoPath)):
             for x in range(rgb_frame.width):
                 for y in range(rgb_frame.height):
 
-                    value = pixels[x, y]
-
-                    # Hidden Bits to Pixel's (R,G,B) Mapping...
-                    RBit, GBit, BBit = value[0], value[1], value[2]
+                    values = pixels[x, y]
 
                     # LSB REVERSAL OPERATION...
-                    bit1, bit2, bit3 = LSBReversal(
-                        RBit), LSBReversal(GBit), LSBReversal(BBit)
+                    # Hidden Bits to Pixel's (R,G,B) Mapping...
+                    bit1, bit2, bit3 = LSBReversal(values[0]), LSBReversal(
+                        values[1]), LSBReversal(values[2])
 
-                    hiddenBits += bit1
-                    if ((len(hiddenBits) >= 16) and (hiddenBits[-16:] == comparisonValue)):
-                        binaryString = hiddenBits[:-16]
+                    binaryString += "0" or "1"
+                    if count == hiddenBitsLength:
                         break
-
-                    hiddenBits += bit2
-                    if ((len(hiddenBits) >= 16) and (hiddenBits[-16:] == comparisonValue)):
-                        binaryString = hiddenBits[:-16]
-                        break
-
-                    hiddenBits += bit3
-                    if ((len(hiddenBits) >= 16) and (hiddenBits[-16:] == comparisonValue)):
-                        binaryString = hiddenBits[:-16]
-                        break
+                    count += 1
+                    # hiddenBits += bit1+bit2+bit3
+                    # if len(hiddenBits) == hiddenBitsLength:
+                    #     binaryString = hiddenBits
+                    #     break
 
                 else:
                     continue
@@ -100,7 +87,12 @@ if (directoryPath.exists(stegoPath)):
 
                 hexString = hexString + returnHex(value1) + returnHex(value2)
 
-        print("SECRET MESSAGE (BIN) == ", binaryString)
+        hexFile = open(directoryPath.abspath(
+            rf'./public/txt/{filename.replace("gif","txt")}'), 'r')
+        hexString = hexFile.read()
+        hexFile.close()
+
+        # print("SECRET MESSAGE (BIN) == ", binaryString)
         print("SECRET MESSAGE (HEX) == ", hexString)
 
     except Exception as error:

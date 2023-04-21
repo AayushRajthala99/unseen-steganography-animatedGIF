@@ -3,6 +3,7 @@ const path = require("path");
 const { spawn } = require("child_process");
 const { logger } = require("../utils/logger");
 const { hashedKey, encryptMessage, decryptMessage } = require("../utils/utils");
+const { hash } = require("bcrypt");
 
 // Python Script Paths...
 let encodeScriptPath = path.resolve("./src/scripts/encode.py");
@@ -74,6 +75,8 @@ async function process(req, res) {
             result.gifFile.replaceAll(".gif", "") +
             "-" +
             result.key +
+            "-" +
+            (result.secretmessage.length * 4 + 4) +
             "-stego.gif";
           result.key = hashedKey(result.key);
           console.log("ENCODE RESULT===", result);
@@ -148,15 +151,15 @@ async function encode(objectData) {
       if (code == 0) {
         // Getting File Size from the Parsed Python Output...
         let byteString = Buffer.from(message, "hex");
-        utfValue = byteString.toString("utf8");
+        outputValue = byteString.toString("utf8");
 
         // Regex Declaration for File Sizes...
         const orgRegex = /--ORIGINAL FILE SIZE--\[ ([\d.]+ [KMGT]?B) \]/;
         const stegRegex = /--STEGO FILE SIZE--\[ ([\d.]+ [KMGT]?B) \]/;
 
         // Regex Match Operation...
-        const orgMatch = utfValue.match(orgRegex);
-        const stegMatch = utfValue.match(stegRegex);
+        const orgMatch = outputValue.match(orgRegex);
+        const stegMatch = outputValue.match(stegRegex);
 
         if (orgMatch && stegMatch) {
           objectData.originalSize = orgMatch[1];
@@ -178,29 +181,60 @@ async function encode(objectData) {
 
 async function decode(objectData) {
   try {
-    console.log("DECODE OBJECT DATA===", objectData);
-    objectData.secretmessage =
-      "60289f7f43b64f3f781a0d68a49f355a:cd42e10fa8d0394f2772a30290902389b0d47297d2429d22713981995970accd12ddeb4e73d74f5818207fdc2caf01e7274dbd68f95d5912267b4fa1f451a0fbdcf80aa5328200437845f8484e565cd5b24a95671facb6f03b9a62427f8ff90568393251699ec18c4a6989d3f78b9040ba64b0616116c8d5264ff0282d9b6585c6052e482685fc5ec73dbb20afa5f18f02b5f03c1aee4f5e14c48b0759faa2b8bceb8bcbc1697f2243e740eedaeabebe9b32f993a2a747ec9cb0ffbed7de99d58c46c6a5c90ad2c5faa875d9ad971adf";
+    //Decode Operation Here...
+    decodeArguments = [`${decodeScriptPath}`, `${objectData.gifFile}`];
 
-    // Test Secret Message for Now, Use 123123 as the key...
-    objectData.key = hashedKey("123123");
-    let operationResult = decryptMessage(
-      objectData.secretmessage,
-      objectData.key
-    );
+    let code, message;
 
-    if (operationResult.status) {
-      objectData.secretmessage = operationResult.message;
-      // console.log("DECODE OBJECT DATA===", objectData);
-      //Decode Operation Here...
+    await runPythonScript(decodeArguments[0], decodeArguments[1])
+      .then((result) => {
+        code = result.code;
+        message = result.message;
+      })
+      .catch((error) => {
+        code = error.error;
+        message = error.message;
+      });
 
-      // Return Values...
-      return { status: true, result: objectData };
+    if (code == 0) {
+      // Getting File Size from the Parsed Python Output...
+      let byteString = Buffer.from(message, "hex");
+      secretValue = byteString.toString("utf8");
+
+      // Regex Declaration for File Sizes...
+      const secretMessageRegex =
+        /SECRET MESSAGE \(HEX\) ==\s*([a-f\d]+:[a-f\d]+)\s*/i;
+
+      // Regex Match Operation...
+      const secretMatch = secretValue.match(secretMessageRegex);
+
+      if (secretMatch) {
+        objectData.secretmessage = secretMatch[1];
+      } else {
+        objectData.secretmessage = null;
+        throw "No Secret Message Detected!";
+      }
+
+      let operationResult = decryptMessage(
+        objectData.secretmessage,
+        objectData.key
+      );
+
+      if (operationResult.status) {
+        objectData.secretmessage = operationResult.message;
+        objectData.key = hashedKey(objectData.key);
+        console.log("DECODE OBJECT DATA===", objectData);
+
+        // Return Values...
+        return { status: true, result: objectData };
+      } else {
+        throw "";
+      }
     } else {
-      throw "";
+      throw { message: message };
     }
   } catch (error) {
-    // logger.error(`DECODE OPERATION ERROR: ${error}`);
+    logger.error(`DECODE OPERATION ERROR: ${error}`);
     return { status: false };
   }
 }
