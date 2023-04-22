@@ -212,7 +212,7 @@ async function decode(objectData) {
         objectData.secretmessage = secretMatch[1];
       } else {
         objectData.secretmessage = null;
-        throw "No Secret Message Detected!";
+        throw { message: "No Secret Message Detected!" };
       }
 
       let operationResult = decryptMessage(

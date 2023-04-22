@@ -22,90 +22,94 @@ def returnHex(value):
 
 
 if (directoryPath.exists(stegoPath)):
-    hexFile = open(directoryPath.abspath(
-        rf'./public/txt/{filename.replace("gif","txt")}'), 'r')
-    hexString = hexFile.read()
-    hexFile.close()
+    filePath = rf'./public/txt/{filename.replace("gif","txt")}'
 
-    hiddenBitsLength = len(hexString)*4+4
+    hexString = ""
+    if (directoryPath.exists(filePath)):
+        hexFile = open(directoryPath.abspath(filePath), 'r')
+        hexString = hexFile.read()
+        hexFile.close()
 
-    # Open the GIF file...
-    image = Image.open(stegoPath)
+        hiddenBitsLength = len(hexString)*4+4
 
-    try:
-        # Calculating Number of Frames in the GIF File...
-        num_frames = image.n_frames
+        # Open the GIF file...
+        image = Image.open(stegoPath)
 
-        # Variables to Store LSB REVERSAL Results...
-        count = 1
-        binaryString = ""
+        try:
+            # Calculating Number of Frames in the GIF File...
+            num_frames = image.n_frames
 
-        # Iterate over all frames in the GIF...
-        for frame_idx in range(num_frames):
-            # Select the current frame
-            image.seek(frame_idx)
+            # Variables to Store LSB REVERSAL Results...
+            count = 1
+            binaryString = ""
 
-            # Convert the frame to RGB mode...
-            rgb_frame = image.convert("RGB")
+            # Iterate over all frames in the GIF...
+            for frame_idx in range(num_frames):
+                # Select the current frame
+                image.seek(frame_idx)
 
-            # Get the pixel access object for the frame...
-            pixels = rgb_frame.load()
+                # Convert the frame to RGB mode...
+                rgb_frame = image.convert("RGB")
 
-            # Modify the pixel values as needed...
-            for x in range(rgb_frame.width):
-                for y in range(rgb_frame.height):
+                # Get the pixel access object for the frame...
+                pixels = rgb_frame.load()
 
-                    values = pixels[x, y]
+                # Modify the pixel values as needed...
+                for x in range(rgb_frame.width):
+                    for y in range(rgb_frame.height):
 
-                    # LSB REVERSAL OPERATION...
-                    # Hidden Bits to Pixel's (R,G,B) Mapping...
-                    bit1, bit2, bit3 = LSBReversal(values[0]), LSBReversal(
-                        values[1]), LSBReversal(values[2])
+                        values = pixels[x, y]
 
-                    binaryString += "0" or "1"
-                    if count == hiddenBitsLength:
-                        break
-                    count += 1
-                    # hiddenBits += bit1+bit2+bit3
-                    # if len(hiddenBits) == hiddenBitsLength:
-                    #     binaryString = hiddenBits
-                    #     break
+                        # LSB REVERSAL OPERATION...
+                        # Hidden Bits to Pixel's (R,G,B) Mapping...
+                        bit1, bit2, bit3 = LSBReversal(values[0]), LSBReversal(
+                            values[1]), LSBReversal(values[2])
+
+                        binaryString += "0" or "1"
+                        if count == hiddenBitsLength:
+                            break
+                        count += 1
+                        # hiddenBits += bit1+bit2+bit3
+                        # if len(hiddenBits) == hiddenBitsLength:
+                        #     binaryString = hiddenBits
+                        #     break
+
+                    else:
+                        continue
+
+                    break
 
                 else:
                     continue
 
                 break
 
-            else:
-                continue
+            tempString = ""
 
-            break
+            # Splitting BinaryList to 8 Bits Chunk...
+            binaryList = [binaryString[i:i+8]
+                          for i in range(0, len(binaryString), 8)]
 
-        tempString = ""
+            print("\n---BINARY TO HEX CONVERSION RESULTS---")
+            for value in binaryList:
+                value = value.zfill(8)
 
-        # Splitting BinaryList to 8 Bits Chunk...
-        binaryList = [binaryString[i:i+8]
-                      for i in range(0, len(binaryString), 8)]
+                if (value == "00111010"):
+                    tempString += ":"
 
-        print("\n---BINARY TO HEX CONVERSION RESULTS---")
-        for value in binaryList:
-            value = value.zfill(8)
+                else:
+                    # Splitting 8 Bit Chunk to 2*4 Bits Chunk...
+                    value1 = value[:4]
+                    value2 = value[4:]
 
-            if (value == "00111010"):
-                tempString += ":"
+                    tempString += returnHex(value1) + returnHex(value2)
 
-            else:
-                # Splitting 8 Bit Chunk to 2*4 Bits Chunk...
-                value1 = value[:4]
-                value2 = value[4:]
+        except Exception as error:
+            pass
 
-                tempString += returnHex(value1) + returnHex(value2)
+    # print("SECRET MESSAGE (BIN) == ", binaryString)
+    print("SECRET MESSAGE (HEX) == ", hexString)
 
-        # print("SECRET MESSAGE (BIN) == ", binaryString)
-        print("SECRET MESSAGE (HEX) == ", hexString)
-
-    except Exception as error:
-        pass
 else:
     print("FILE DOES NOT EXIST")
 
