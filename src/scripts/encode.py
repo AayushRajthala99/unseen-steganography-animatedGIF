@@ -32,6 +32,9 @@ if (directoryPath.exists(filePath)):
     # Open the GIF file...
     image = Image.open(filePath)
 
+    # Set '$#' as Terminating String of Secret Message... [ ASCII '$' = BIN '00100100', ASCII '#' = BIN '00100011' ]
+    terminatingString = "0010010000100011"
+
     # Get the original image information
     original_format = image.format
     original_size = image.size
@@ -183,13 +186,13 @@ if (directoryPath.exists(filePath)):
             originalFileSize = convert_bytes(directoryPath.getsize(filePath))
             stegoFileSize = convert_bytes(directoryPath.getsize(stegoPath))
             print(
-                f"\n--SUCCESS--[ {filename.replace('.gif','')}-{key}-stego.gif ] File Saved Successfully!")
+                f"\n--SUCCESS--[ {stegoFilename} ] File Saved Successfully!")
             print(f"--ORIGINAL FILE SIZE--[ {originalFileSize} ]")
             print(f"--STEGO FILE SIZE--[ {stegoFileSize} ]")
 
         else:
             print(
-                f"--ERROR--Save Error for [ {filename.replace('.gif','')}-{key}-stego.gif ]")
+                f"--ERROR--Save Error for [ {stegoFilename} ]")
 
     except Exception as error:
         pass
