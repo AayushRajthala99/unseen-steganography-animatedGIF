@@ -1,14 +1,14 @@
 {
   "name": "unseen-steganography-animatedgif",
   "version": "1.0.0",
-  "description": "Unseen: Steganography on Animated GIFs",
+  "description": "Unseen: Steganography on Animated GIF",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AayushRajthala99/unseen-steganography-animatedGIFs.git"
+    "url": "git+https://github.com/AayushRajthala99/unseen-steganography-animatedGIF.git"
   },
   "keywords": [
     "Node.js",
