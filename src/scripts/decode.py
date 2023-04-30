@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 from PIL import Image
 from os import path as directoryPath
 
@@ -22,6 +23,9 @@ def returnHex(value):
 
 
 if (directoryPath.exists(stegoPath)):
+    # Initialized Timer...
+    start_time = time.time()
+
     filePath = rf'./public/txt/{filename.replace("gif","txt")}'
 
     hexString = ""
@@ -106,6 +110,11 @@ if (directoryPath.exists(stegoPath)):
 
         except Exception as error:
             pass
+
+    # Stopped Timer...
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print("Elapsed time: {:.3f} seconds".format(elapsed_time))
 
     # print("SECRET MESSAGE (BIN) == ", binaryString)
     print("SECRET MESSAGE (HEX) == ", hexString)

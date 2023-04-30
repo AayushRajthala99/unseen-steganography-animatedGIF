@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 from PIL import Image
 from os import path as directoryPath
 
@@ -29,6 +30,9 @@ def LSBOperation(value, bit):  # This function performs LSB Operation...
 
 
 if (directoryPath.exists(filePath)):
+    # Initialized Timer...
+    start_time = time.time()
+
     # Open the GIF file...
     image = Image.open(filePath)
 
@@ -175,6 +179,11 @@ if (directoryPath.exists(filePath)):
             format="GIF",
             optimize=True
         )
+
+        # Stopped Timer...
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        print("Elapsed time: {:.3f} seconds".format(elapsed_time))
 
         hexFile = open(directoryPath.abspath(
             rf'./public/txt/{stegoFilename.replace("gif","txt")}'), 'w')
