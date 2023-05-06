@@ -65,6 +65,8 @@ document.addEventListener("click", (event) => {
       errordiv.innerText = "";
     }
   }
+  const encodeElement = document.querySelector(".encode-info");
+  const decodeElement = document.querySelector(".decode-info");
 
   if (targetId.includes("labelForEncode" || "encode")) {
     const errordiv = document.querySelector("#operationError");
@@ -86,6 +88,9 @@ document.addEventListener("click", (event) => {
       secretInput.removeAttribute("readonly");
     }
     secretInput.style.display = "block";
+
+    decodeElement.style.display = "none";
+    encodeElement.style.display = "block";
   }
 
   if (targetId.includes("labelForDecode" || "decode")) {
@@ -102,6 +107,9 @@ document.addEventListener("click", (event) => {
     secretMessage.value = "";
     secretInput.setAttribute("disabled", "");
     secretInput.setAttribute("readonly", "");
+
+    decodeElement.style.display = "block";
+    encodeElement.style.display = "none";
   }
 
   if (event.target.className == "submit-button") {

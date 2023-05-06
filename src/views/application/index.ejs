@@ -11,6 +11,15 @@
   <%- include('../header.ejs') %>
 
   <body oncontextmenu="return false">
+    <fieldset class="application-info encode-info">
+      <legend class="form-info">How To Encode?</legend>
+      <div class="info-container">
+        <div class="info-value">Step-1: Select Encode Operation</div>
+        <div class="info-value">Step-2: Select GIF File</div>
+        <div class="info-value">Step-3: Enter Secret Key</div>
+        <div class="info-value">Step-4: Enter Secret Message</div>
+      </div>
+    </fieldset>
     <form action="/" id="applicationform" method="post" class="form-container">
       <fieldset class="form-field input-headers">
         <legend class="form-info">Steganography</legend>
@@ -63,6 +72,15 @@
       </fieldset>
       <button type="submit" class="submit-button">START</button>
     </form>
+    <fieldset class="application-info decode-info">
+      <legend class="form-info">How To Decode?</legend>
+      <div class="info-container">
+        <div class="info-value">Step-1: Select Decode Operation</div>
+        <div class="info-value">Step-2: Select Stego-GIF File</div>
+        <div class="info-value">Step-3: Enter Secret Key</div>
+        <div class="info-value"></div>
+      </div>
+    </fieldset>
     <script src="/js/application.js"></script>
   </body>
   <%- include('../footer.ejs') %>

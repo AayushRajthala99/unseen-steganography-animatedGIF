@@ -20,6 +20,12 @@
 }
 
 @media only screen and (max-width: 1115px) {
+  .encode-info {
+    display: none !important;
+  }
+  .decode-info {
+    display: none !important;
+  }
   .footer-title {
     display: none;
   }
@@ -328,4 +334,42 @@ textarea:focus {
 .theme-container {
   align-self: center;
   margin-left: 20px;
+}
+
+.encode-info {
+  position: absolute;
+  min-height: 550px;
+  max-height: 550px;
+  max-width: 300px;
+  min-width: 300px;
+  top: 100px;
+  left: 20px;
+  padding: 0 15px;
+}
+
+.decode-info {
+  display: none;
+  position: absolute;
+  min-height: 550px;
+  max-height: 550px;
+  max-width: 300px;
+  min-width: 300px;
+  top: 100px;
+  right: 20px;
+  padding: 0 15px;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 500px;
+  width: 265px;
+}
+
+.info-value {
+  height: 70px;
+  margin-top: 10px;
+  padding-top: 10px;
+  text-align: center;
 }
