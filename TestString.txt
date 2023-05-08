@@ -1,0 +1,10 @@
+Helloनमस्ते¡Hola!BonjourПриветこんにちは안녕하세요MerhabaسلامสวัสดีສະບາຍດີCiao您好ПрывітаннеგამარჯობაمرحباשלוםOláਸत श्री अकालनਮਸਕਾਰ😊😂🤣
+
+```
+This string includes characters from English, Hindi, Spanish, French, Russian, Japanese, Korean, Turkish, Arabic, Thai, Lao, Italian,
+Mandarin Chinese, Belarusian, Ukrainian, Georgian, Portuguese, Punjabi, and Marathi, which are all among the top 20 most spoken languages
+in the world based on the number of total speakers.
+
+It also contains 3 of the most frequently used emojis.
+
+```
