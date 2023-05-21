@@ -7,7 +7,7 @@
 - To develop a web application that implements Steganography on Animated GIF.
 - To encrypt secret messages using Advanced Encryption Standard (AES).
 
-### :star_struck: Key Features
+### :star_struck: Cool Features
 - Supports Multiple Languages as Secret Key & Secret Message.
 - Supports Emojis as Secret Key & Secret Message.
 - Dark/Light Mode Switch
@@ -24,9 +24,7 @@
 - Military Intelligence
 
 [//]: # (Install)
-## :wrench: Install
-
-### :gear: Pre-requisites
+## :gear: Pre-requisites
 ### <img src="https://github.com/tandpfun/skill-icons/blob/main/icons/NodeJS-Dark.svg" style="height: 30px;aspect-ratio:auto;"/> NodeJS & NPM
 ~~~shell
 https://nodejs.org/en/download/
@@ -42,7 +40,7 @@ git clone https://github.com/AayushRajthala99/unseen-steganography-animatedGIF.g
 npm install
 ~~~
 
-### :dart: Install Python Libraries
+### :books: Install Python Libraries
 ~~~shell
 pip install -r .\requirements.txt
 ~~~
