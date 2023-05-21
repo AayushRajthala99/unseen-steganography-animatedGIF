@@ -1,4 +1,5 @@
 # Unseen: Steganography on Animated GIF
+A Web-Application for Steganography on Animated GIFs.
 
 ## :star2: Project Description
 <p>Unseen: Steganography on Animated GIF is a web application that can hide secret messages within an Animated GIF file in a secure way. The application uses a technique called LSB Substitution and an encryption method called Advanced Encryption Standard (AES) to hide the secret text in each frame of the Animated GIF. This project is prepared in partial fulfillment of the requirement for the degree of Bachelor of Science in Computer Science and Information Technology. This project is for Educational Purposes only!</p>
